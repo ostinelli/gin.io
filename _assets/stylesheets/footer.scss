@@ -1,0 +1,12 @@
+#footer-top {
+  margin-top: 60px;
+  height: 120px;
+  background: $nav_background;
+}
+
+#footer-bottom {
+  height: $header_height;
+  padding-top: 24px;
+  background: $footer_background;
+  color: $footer_bottom_color;
+}
