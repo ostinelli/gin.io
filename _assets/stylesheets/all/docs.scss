@@ -1,5 +1,6 @@
 .docs-main {
   @include span-columns(8);
+  @include pad(0 12px 0 0);
 }
 
 .docs-sidebar {
