@@ -1,0 +1,24 @@
+/.bundle
+
+# vim
+.*.sw[a-z]
+*.un~
+Session.vim
+
+# textmate
+*.tmproj
+*.tmproject
+tmtags
+
+# mine
+.idea
+
+# OSX
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+*.swp
+
+# jekyll
+_site

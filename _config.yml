@@ -1,0 +1,13 @@
+name: RALIS.IO
+description: "A fast, low-latency, low-memory footprint, web JSON-API framework."
+
+url: http://ralis.io
+
+markdown: redcarpet
+pygments: true
+cache: false
+
+assets:
+  compress:
+    css: sass
+    js: uglifier
