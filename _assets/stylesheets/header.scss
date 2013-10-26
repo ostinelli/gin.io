@@ -6,7 +6,7 @@
   z-index: 999;
 
   height: $header_height;
-  background: $dark_blue;
+  background: $nav_background;
   color: $white;
 
   a {
@@ -19,7 +19,7 @@
 
     height: $header_height;
     padding-top: 10px;
-    background-color: $orange;
+    background-color: $logo_background;
     font-size: 35px;
     text-align: center;
 
