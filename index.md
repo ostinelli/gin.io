@@ -3,9 +3,7 @@ layout: default
 title: RALIS.IO
 ---
 
-# Hello world 2
-
-Hello.
+# Welcome
 
 {% highlight lua %}
 

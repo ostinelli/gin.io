@@ -1,0 +1,8 @@
+body {
+  margin-top: $header_height;
+}
+
+.container {
+  @include outer-container;
+  position: relative;
+}

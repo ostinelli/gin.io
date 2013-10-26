@@ -1,0 +1,27 @@
+.docs-main {
+  @include span-columns(8);
+}
+
+.docs-sidebar {
+  @include span-columns(4);
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      border-bottom: 1px solid #ececec;
+      padding: 12px 0;
+
+      a {
+        color: $link_color;
+        text-decoration: none;
+
+        &:hover, &:focus {
+          color: $link_hover;
+        }
+      }
+    }
+  }
+}

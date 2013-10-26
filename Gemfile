@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'jekyll-assets'
-gem "uglifier"
-gem "sass"
-gem "neat"
+gem 'uglifier'
+gem 'sass'
+gem 'neat'

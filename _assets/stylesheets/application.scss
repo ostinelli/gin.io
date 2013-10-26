@@ -1,6 +1,9 @@
 @import "bourbon";
 @import "neat";
-
-body {
-    background: pink;
-}
+@import "includes/colors";
+@import "includes/common";
+@import "styleguide";
+@import "layout";
+@import "header";
+@import "syntax";
+@import "all/docs";
