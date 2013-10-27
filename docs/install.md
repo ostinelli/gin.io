@@ -28,6 +28,8 @@ Ralis runs on [OpenResty](http://openresty.org/), a customized bundle of [Nginx]
 
  * Install OpenResty
 
+    Go to [OpenResty](http://openresty.org/) in the downloads section and grab the latest version number. Then:
+
     ```bash
     $ wget http://openresty.org/download/ngx_openresty-VERSION.tar.gz
     $ tar zxvf ngx_openresty-VERSION.tar.gz
@@ -64,10 +66,11 @@ $ luarocks make
 
 # Test installation
 
-Go to a workspace directory:
+Check to see if OpenResty got successfully installed:
 
 ```bash
-$ cd ~/workspace
+$ nginx -v
+nginx version: ngx_openresty/1.2.8.6
 ```
 
 Check if the Ralis client got correctly installed:
@@ -82,62 +85,6 @@ The available ralis commands are:
  stop            Stops the Ralis server
 ```
 
-Create a new Ralis app:
+If you can see both of these, consider your installation of Ralis a success!
 
-```bash
-$ ralis new demo
-Creating app demo...
-  created file demo/priv/test-server.key
-  created file demo/priv/development-server.key
-  created file demo/app/models/.gitkeep
-  created file demo/priv/test-server.crt
-  created file demo/config/settings.lua
-  created file demo/priv/development-server.crt
-  created file demo/spec/spec_helper.lua
-  created file demo/spec/models/.gitkeep
-  created file demo/config/nginx.conf
-  created file demo/spec/controllers/1/pages_controller_spec.lua
-  created file demo/lib/.gitkeep
-  created file demo/config/application.lua
-  created file demo/app/controllers/1/pages_controller.lua
-  created file demo/config/database.lua
-  created file demo/config/initializers/errors.lua
-  created file demo/config/routes.lua
-```
-
-A new `hello world` app has been created for you. CD into the `demo` directory:
-
-```bash
-$ cd demo
-```
-
-Ensure the demo tests can be run:
-
-```bash
-$ busted
-
-1 success / 0 failures / 0 pending : 0.039959 seconds.
-```
-
-Run the demo server:
-
-```bash
-$ ralis start
-Ralis app in development was succesfully started on port 7200.
-```
-
-Open up the browser and point it to [https://localhost:7200/](https://localhost:7200/). You should see an error message:
-
-```javascript
-{
-    code: 101,
-    message: "Invalid Accept header format."
-}
-```
-This is expected behavior, and you can consider your installation of Ralis a success!
-
-For the curious: Ralis uses HTTP headers to implement API versioning. By accessing your Ralis `demo` application directly from your browser
-you're not setting the proper headers, and are therefore seeing this error.
-
-If you actually want to see Ralis reply to you with the `hello world` of your `demo` application, open up the very convenient [Ralis API console](/console.html) by accessing the URL [https://localhost:7200/ralisconsole](https://localhost:7200/ralisconsole) and hitting the `HIT` button.
-The console is a developer tool that allows you to play around with your API in a web browser.
+You can now proceed to [Getting Started](/docs/getting_started.html) to create your first Ralis app.
