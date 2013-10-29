@@ -88,6 +88,6 @@ v1:GET("/pages/(.*)", { controller = "pages", action = "show" })
 
 ```
 
-This will match all HTTP `GET` requests done to `/users/*`. The captured portion of the route will be available in the `show` action of the controller `pages_controller.lua` as `self.params[1]`.
+This will match all HTTP `GET` requests done to `/pages/*`. The captured portion of the route will be available in the `show` action of the controller `pages_controller.lua` as `self.params[1]`.
 
 For example, in a `GET` request to `/pages/home`, the value of `self.params[1]` in the controller's action `show` will be `home`.
