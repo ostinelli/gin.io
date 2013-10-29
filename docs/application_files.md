@@ -1,6 +1,6 @@
 ---
 layout: docs
-title: RALIS.IO | Getting Started
+title: RALIS.IO | Application Files
 ---
 
 
