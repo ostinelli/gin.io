@@ -76,8 +76,6 @@ v1:GET("/users/:user_id/messages/:id", { controller = "messages", action = "show
 
 This line will expose in the `show` action of the `messages_controller.lua` the two nested routes parameters `self.params.user_id` and `self.params.id`.
 
-See [controllers](/docs/controller.html) for additional information on how to use named routes parameters.
-
 
 ##### Patterns
 
