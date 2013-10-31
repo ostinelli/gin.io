@@ -134,4 +134,24 @@ It also provide these additional advanced properties:
  * `request.ngx`: the ngx object, refer to the [HttpLuaModule](http://wiki.nginx.org/HttpLuaModule) documentation for more information.
 
 
-MINOOOOORRRRRR
+##### Minor version support
+
+While support for major version numbers is baked into Ralis by calling the controllers that correspond to a major version number, minor versioning logic can be implemented at a controller level.
+
+Let's say that a client requests the specific version `1.0.2-rc1` in the request headers. Ralis will automatically support major versioning by calling the controller located in the corresponding directory `./app/controllers/1`, but then in your controller the full version requested by the client is available in the parameter `self.request.api_version`.
+
+A very simple logic looks like this:
+
+```lua
+local InfoController = {}
+
+function InfoController:whoami()
+    if self.request.api_version == "1.0.2-rc1" then
+        return 200, { name = "ralis newer" }
+    else
+        return 200, { name = "ralis standard" }
+    end
+end
+
+return InfoController
+```

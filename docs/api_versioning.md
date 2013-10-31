@@ -23,12 +23,15 @@ Accept: application/vnd.demo.v1+json
 Major versioning is baked into Ralis. You only need to define your version [routes](/docs/routes.html), and ensure that the controllers that respond to them are inside the correspondant directory `./app/controllers/{major-version}`. For example, all controllers responding to version `1` need to be placed in the `./app/controllers/1` directory.
 
 
-If you are providing support for minor versioning of your APIs, a client can specify a minor version like `1.0.13-beta` by providing the header:
+##### Minor versioning support
+
+If you need to provide support for minor versioning of your APIs, a client can specify a minor version like `1.0.13-beta` by providing the header:
 
 ```
 Accept: application/vnd.demo.v1.0.13-beta+json
 ```
-See [controllers](/docs/controllers.html) on how to support minor API versioning.
+
+> While support for major version numbers is baked into Ralis by calling the controllers that correspond to a major version number, minor versioning can be supported at controllers' level. Please see [controllers](/docs/controllers.html) on how to do so.
 
 
 ##### API Console
