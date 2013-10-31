@@ -38,3 +38,53 @@ As per this example, this will return a HTTP status `400`, with the specified he
     "message": "Invalid request."
 }
 ```
+
+Please note that your application's error numbers must be greater than `1000`. All errors numbers from `0` to `999` are reserved for Ralis errors.
+
+##### Ralis error responses
+
+
+If no `Accept` header is provided by a client, Ralis will respond with a `412` HTTP status and a JSON body specifying the following error:
+
+```javascript
+{
+    "code": 100,
+    "message": "Accept header not set."
+}
+```
+
+If an invalid `Accept` header is provided by a client, Ralis will respond with a `412` HTTP status and a JSON body specifying the following error:
+
+```javascript
+{
+    "code": 101,
+    "message": "Invalid Accept header format."
+}
+```
+
+If the API version specified by the client is not supported by your application, Ralis will respond with a `412` HTTP status and a JSON body specifying the following error:
+
+```javascript
+{
+    "code": 102,
+    "message": "Unsupported version specified in the Accept header."
+}
+```
+
+If the JSON body provided in a request is invalid, Ralis will respond with a `400` HTTP status and a JSON body specifying the following error:
+
+```javascript
+{
+    "code": 103,
+    "message": "Could not parse JSON in body."
+}
+```
+
+If the JSON body provided in a request is not a JSON hash, Ralis will respond with a `400` HTTP status and a JSON body specifying the following error:
+
+```javascript
+{
+    "code": 104,
+    "message": "Body should be a JSON hash."
+}
+```

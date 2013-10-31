@@ -29,36 +29,6 @@ Accept: application/vnd.demo.v1.0.13-beta+json
 See [controllers](/docs/controllers.html) on how to support minor API versioning.
 
 
-##### Common Error responses
-
-If no `Accept` header is provided by a client, Ralis will respond with a `412` HTTP status and a JSON body specifying the following error:
-
-```javascript
-{
-    "code": 100,
-    "message": "Accept header not set."
-}
-```
-
-If an invalid `Accept` header is provided by a client, Ralis will respond with a `412` HTTP status and a JSON body specifying the following error:
-
-```javascript
-{
-    "code": 101,
-    "message": "Invalid Accept header format."
-}
-```
-
-If the API version specified by the client is not supported by your application, Ralis will respond with a `412` HTTP status and a JSON body specifying the following error:
-
-```javascript
-{
-    "code": 102,
-    "message": "Unsupported version specified in the Accept header."
-}
-```
-
-
 ##### API Console
 
 Please note that to provide developers with an easy way to play with their API, Ralis comes with a handy [API Console](/docs/api_console.html) that takes care of API Versioning in a browser.
