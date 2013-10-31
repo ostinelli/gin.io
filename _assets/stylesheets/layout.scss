@@ -2,6 +2,10 @@ body {
   margin-top: $header_height;
 }
 
+.main {
+  padding-bottom: 80px;
+}
+
 .container {
   @include outer-container;
   position: relative;

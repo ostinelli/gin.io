@@ -1,3 +1,7 @@
+.docs {
+  background-color: #fff;
+}
+
 .docs-main {
   @include span-columns(9);
   @include pad(0 12px 0 0);
