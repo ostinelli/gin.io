@@ -190,7 +190,7 @@ For example, `Ralis.settings.port` returns the port the server is running in.
 
 
 ###### ./config/initializers
-All of the `.lua` files added here will be run as part of the initialization process. By default, it must contain a `errors.lua` file, a single entry point that defines all of the errors that your application can raise. More on errors can be read [here](/docs.errors.html).
+All of the `.lua` files added here will be run as part of the initialization process. By default, it must contain a `errors.lua` file, a single entry point that defines all of the errors that your application can raise. More on errors can be read [here](/docs/errors.html).
 
 ##### ./lib
 This directory may be used to put any library files you might need to require from your code.
