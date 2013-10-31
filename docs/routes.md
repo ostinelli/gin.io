@@ -26,6 +26,8 @@ Let's see what these lines do. The first line specifies a container for version 
 local v1 = Routes.version(1)
 ```
 
+> Ralis require an integer number to define a version, as these routes are defined for major versions only. If you need to provide support for minor versions, it is possible to do so in [controllers](/docs/controllers.html).
+
 The other lines specify HTTP action routes specific to version `1`. For example:
 
 ```lua

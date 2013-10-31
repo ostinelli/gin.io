@@ -39,7 +39,7 @@ As per this example, this will return a HTTP status `400`, with the specified he
 }
 ```
 
-Please note that your application's error numbers must be greater than `1000`. All errors numbers from `0` to `999` are reserved for Ralis errors.
+> Your application's error numbers must be greater than `1000`. All errors numbers from `0` to `999` are reserved for Ralis errors.
 
 ##### Ralis error responses
 
