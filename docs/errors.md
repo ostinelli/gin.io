@@ -1,6 +1,6 @@
 ---
 layout: docs
-title: RALIS.IO | Controllers
+title: RALIS.IO | Errors
 ---
 
 
