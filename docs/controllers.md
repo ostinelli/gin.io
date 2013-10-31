@@ -117,6 +117,8 @@ The original request is available in a controller's action and accessible on sel
 self.request
 ```
 
+Please note that Ralis only accepts requests that provide JSON in the body, hence the body is available to you pre-parsed for your convenience.
+
 The request has the following properties:
 
  * `request.uri_params`: the parsed querystring params (a table)

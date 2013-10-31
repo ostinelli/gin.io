@@ -18,6 +18,8 @@ So for instance, if your application name (as defined in the file `./config/appl
 Accept: application/vnd.demo.v1+json
 ```
 
+Please note that Ralis only accepts requests that provide JSON in the body, hence the `+json` portion of the `Accept` header.
+
 Major versioning is baked into Ralis. You only need to define your version [routes](/docs/routes.html), and ensure that the controllers that respond to them are inside the correspondant directory `./app/controllers/{major-version}`. For example, all controllers responding to version `1` need to be placed in the `./app/controllers/1` directory.
 
 
