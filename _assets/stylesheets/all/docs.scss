@@ -28,6 +28,12 @@
           color: $link_hover;
         }
       }
+
+      &.active {
+        a {
+          color: $black;
+        }
+      }
     }
   }
 }

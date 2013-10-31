@@ -57,7 +57,7 @@ $ ralis start
 Ralis app in development was succesfully started on port 7200.
 ```
 
-Open up the browser and point it to [https://localhost:7200/](https://localhost:7200/). You should see an error message:
+Open up the browser and point it to [http://localhost:7200/](http://localhost:7200/). You should see an error message:
 
 ```javascript
 {
@@ -67,7 +67,7 @@ Open up the browser and point it to [https://localhost:7200/](https://localhost:
 ```
 Do not worry about the fact that you're seeing this error. It is expected behavior: Ralis uses the HTTP header `Accept` to implement API versioning, therefore by accessing your Ralis `demo` application directly from your browser you're not setting it correctly, which is what Ralis is complaining about.
 
-It is however very practical for developers to play around with their API in a browser. To support this, Ralis comes with an [API console](/docs/api_console.html) that can be accessed in a browser at the address [https://localhost:7200/ralisconsole](https://localhost:7200/ralisconsole).
+It is however very practical for developers to play around with their API in a browser. To support this, Ralis comes with an [API console](/docs/api_console.html) that can be accessed in a browser at the address [http://localhost:7200/ralisconsole](http://localhost:7200/ralisconsole).
 
 Try it out now: open up the API console, then click on the `HIT` button. You should now see the Ralis `hello world` of your `demo` application, in the response body:
 

@@ -144,7 +144,7 @@ http {
 }
 ```
 
- You can see that it contains 3 parameters, all of which takes values defined in the `settingsl.lua` file (see here below):
+ You can see that it contains 3 parameters, all of which takes values defined in the `settings.lua` file (see here below):
 
  * `{{ "{{RALIS_ENV" }}}}`: it contains the Ralis environment the server is run on, such as `development`, `production`, etc
  * `{{ "{{RALIS_CODE_CACHE" }}}}`: can be `on` or `off`
@@ -187,16 +187,16 @@ The two parameters that need to be specified on every environment are:
 * `port`: the port to be used by `nginx`. This value default to `7200` for the `development` environment, to `7201` for the `test` environment and to `80` for the `production` environment.
 
 You may also specify your own custom settings in here. All of the setting parameters specified in this file will be available inside your application: `Ralis.settings` will return the ones that correspond to the environment you are running the server in.
-For example, `Ralis.settings.port` returns the port the server is running in.
+For example, `Ralis.settings.port` returns the port the server is running on.
 
 
 ###### ./config/initializers
-All of the `.lua` files added here will be run as part of the initialization process. By default, it must contain a `errors.lua` file, a single entry point that defines all of the errors that your application can raise. More on errors can be read [here](/docs/errors.html).
+All of the `*.lua` files added here will be run as part of the initialization process. By default, it must contain an `errors.lua` file, a single entry point that defines all of the errors that your application can raise. More on errors can be read [here](/docs/errors.html).
 
 ##### ./lib
 This directory may be used to put any library files you might need to require from your code.
 
 ##### ./spec
-Ralis comes with test helpers to test drive your code. By convention, the subdirectories and filenames match the ones defined in the `./app` directory, with one caveat: all of the test files must have their name end in `_spec.lua`.
+Ralis comes with test helpers to test drive your code. By convention, the subdirectories and filenames match the ones defined in the `./app` directory, with one caveat: all of the test files must have their name end in `*_spec.lua`.
 
 The `spec_helper.lua` file is a helper file that needs to be included in all of your tests to be able to access test runners. You may however also use it to define your own custom test helpers.
