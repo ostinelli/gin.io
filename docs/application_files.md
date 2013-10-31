@@ -53,11 +53,12 @@ The `models` subdirectory contains all your models. More on models [here](/docs/
 The `config` directory contains all the configuration files of your app, and allows you to define your own initializers.
 
 ###### `application.lua`
-This file is currently used only to define your application name. After creating your app, you shouldn't probably need to change it. The application name is used to define the `Accept` header used in [API versioning](/docs/api_versioning.html). Here's what a normal file looks like:
+This file is currently used only to define your application name and version. The application name is used to define the `Accept` header used in [API versioning](/docs/api_versioning.html). Here's what a normal file looks like:
 
 ```lua
 Application = {
-    name = "demo"
+    name = "demo",
+    version = "0.0.1"
 }
 ```
 
