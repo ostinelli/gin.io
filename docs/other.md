@@ -17,7 +17,7 @@ In your application, `Ralis` exposes some attributes you might need.
 If you need to manually encode/decode JSON, you can do so by using the global JSON object:
 
  * to encode: `JSON.encode(table)`
- * to decode: `JSON.decode(table)`
+ * to decode: `JSON.decode(string)`
 
 JSON exposes the [CJSON](http://www.kyne.com.au/~mark/software/lua-cjson.php) class.
 
