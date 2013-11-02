@@ -66,7 +66,7 @@ Application = {
 Your database connections can be defined here. Multiple database can be supported. The generated file contains an example on how to define a connection to a `mysql` database (currently, the only RDBMS database with a Ralis ORM):
 
 ```lua
-local db = require 'ralis.db.db'
+local sqldb = require 'ralis.db.sql'
 
 -- Here you can setup your databases that will be accessible throughout your application.
 -- First, specify the settings (you may add multiple databases with this pattern):
@@ -104,7 +104,7 @@ local DbSettings = {
 }
 
 -- Then initialize your database(s) like this:
-DB = db.new(DbSettings[Ralis.env])
+DB = sqldb.new(DbSettings[Ralis.env])
 ```
 
 You may also consider setting connections to [Redis](http://redis.io/), [RabbitMQ](http://www.rabbitmq.com/) or other types of datastores.

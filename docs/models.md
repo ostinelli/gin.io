@@ -27,7 +27,7 @@ However, Ralis does come with a more traditional database helper that allows you
 To create a MySQL model with ORM functionalities, we first need to define a new MySQL database in the file `./config/database.lua`, by specifying the `mysql` adapter like so:
 
 ```lua
-local db = require 'ralis.db.db'
+local sqldb = require 'ralis.db.sql'
 
 -- Here you can setup your databases that will be accessible throughout your application.
 -- First, specify the settings (you may add multiple databases with this pattern):
@@ -65,7 +65,7 @@ local DbSettings = {
 }
 
 -- Then initialize your database(s) like this:
-DB = db.new(DbSettings[Ralis.env])
+DB = sqldb.new(DbSettings[Ralis.env])
 ```
 
 In Lua, a variable that is not specifically set as `local` is defined globally. Hence, the database variable `DB` defined here above is a global object available
@@ -106,22 +106,34 @@ The `Users` model defined here above can now be used to perform standard SQL que
  user.id -- => 1
  ```
 
- * `Users.all()`: returns all users. For example:
+ * `Users.all(options)`: returns all users. If provided, `options` is a table that can specify the `limit`, the `offset` and the `order` of the resultset. For example:
 
  ```lua
  local users = Users.all()
  ```
 
- * `Users.where(attrs, options)`: returns users that match the query specified in attributes. `options` is a table that can specify the `limit` and `offset`, and the `order` of the resultset. For example:
+ * `Users.where(attrs, options)`: returns users that match the query specified in attributes. If provided, `options` is a table that can specify the `limit`, the `offset` and the `order` of the resultset. For example:
 
  ```lua
  local users = Users.where({ first_name = 'ralis'}, { limit = 5, offset = 10, order = "first_name DESC" } )
  ```
 
- * `Users.find_by(attrs)`: same as `.where`, but will return only the first match. For example:
+ * `Users.find_by(attrs, options)`: same as `.where`, but will return only the first match. If provided, `options` is a table that can specify the `order` of the resultset. For example:
 
  ```lua
  local user = Users.find_by({ first_name = 'ralis'})
+ ```
+
+ * `Users.delete_all(options)`: deletes all users. If provided, `options` is a table that can specify the `limit` of the row count. For example:
+
+ ```lua
+ local users = Users.delete_all()
+ ```
+
+ * `Users.delete_where(attrs, options)`: deletes all users that match the query specified in attributes. If provided, `options` is a table that can specify the `limit` of the row count. For example:
+
+ ```lua
+ local users = Users.delete_where({ first_name = 'ralis'}, { limit = 5 })
  ```
 
  * `user:save()`: saves a new model instance or updates an existing one. For example:
