@@ -84,6 +84,8 @@ Users = DB:define('users')
 ```
 This defines a model `Users` that corresponds to the database table `users`.
 
+> For the ORM to work properly, the table `users` must have an `AUTO_INCREMENT PRIMARY KEY` named `id`. Please refer to [migrations](/docs/migrations.html) for additional information.
+
 ###### Queries
 
 The `Users` model defined here above can now be used to perform standard SQL queries.
