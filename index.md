@@ -1,23 +1,23 @@
 ---
 layout: home
-title: RALIS.IO
+title: CARB.IO
 ---
 
 # Welcome
 
-Ralis is an JSON-API framework, currently in its early stage.
+Carb is an JSON-API framework, currently in its early stage.
 
 It is helpful when you need an extra-boost in performance and scalability, as it runs embedded in a packaged version of nginx
 called [OpenResty](http://openresty.org/) and it's entirely written in [Lua](http://www.lua.org/).
 For those not familiar with Lua, don't let that scare you away: Lua is really easy to use, very fast and simple to get started with.
 
-For instance, this is what a simple Ralis controller looks like:
+For instance, this is what a simple Carb controller looks like:
 
 ```lua
 local InfoController = {}
 
 function InfoController:whoami()
-    return 200, { name = 'ralis' }
+    return 200, { name = 'carb' }
 end
 
 return InfoController
@@ -25,7 +25,7 @@ return InfoController
 
 #### Features
 
-Ralis already provides:
+Carb already provides:
 
  * [Controllers](/docs/controllers.html)
  * [Models](/docs/models.html) and a MySql ORM

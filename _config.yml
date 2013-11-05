@@ -1,9 +1,9 @@
 # jekyll serve -w
 
-name: RALIS.IO
+name: CARB.IO
 description: "A fast, low-latency, low-memory footprint, web JSON-API framework."
 
-url: http://ralis.io
+url: http://carb.io
 
 markdown: redcarpet
 pygments: true

@@ -1,12 +1,12 @@
 ---
 layout: docs
-title: RALIS.IO | Install
+title: CARB.IO | Install
 ---
 
 # Install
 
 ### On OSX
-These instructions allow you to install Ralis on a OSX developer machine.
+These instructions allow you to install Carb on a OSX developer machine.
 
 ##### Homebrew
 The instructions here below will assume that you have [HomeBrew](http://brew.sh/) installed.
@@ -17,7 +17,7 @@ $ ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
 ```
 
 ##### OpenResty
-Ralis runs on [OpenResty](http://openresty.org/), a customized bundle of [Nginx](http://nginx.org/).
+Carb runs on [OpenResty](http://openresty.org/), a customized bundle of [Nginx](http://nginx.org/).
 
  * Install Perl Compatible Regular Expressions & LuaJIT
 
@@ -57,10 +57,10 @@ Lua and a lua package manager.
 $ brew install lua luarocks
 ```
 
-##### Ralis
+##### Carb
 ```bash
-$ git clone git@github.com:ostinelli/ralis.git
-$ cd ralis
+$ git clone git@github.com:ostinelli/carb.git
+$ cd carb
 $ luarocks make
 ```
 
@@ -73,18 +73,18 @@ $ nginx -v
 nginx version: ngx_openresty/1.2.8.6
 ```
 
-Check if the Ralis client got correctly installed:
+Check if the Carb client got correctly installed:
 
 ```bash
-$ ralis
-RALIS v0.1-rc1, a RESTful API web framework. Usage: ralis COMMAND [ARGS]
+$ carb
+CARB v0.1-rc1, a RESTful API web framework. Usage: carb COMMAND [ARGS]
 
-The available ralis commands are:
- new [name]      Create a new Ralis application
- start           Starts the Ralis server
- stop            Stops the Ralis server
+The available carb commands are:
+ new [name]      Create a new Carb application
+ start           Starts the Carb server
+ stop            Stops the Carb server
 ```
 
-If you can see both of these, consider your installation of Ralis a success!
+If you can see both of these, consider your installation of Carb a success!
 
-You can now proceed to [Getting Started](/docs/getting_started.html) to create your first Ralis app.
+You can now proceed to [Getting Started](/docs/getting_started.html) to create your first Carb app.

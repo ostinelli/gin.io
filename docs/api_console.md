@@ -1,14 +1,14 @@
 ---
 layout: docs
-title: RALIS.IO | API Console
+title: CARB.IO | API Console
 ---
 
 
 # API Console
 
-Ralis comes with a handy tool to allow developers play around with their own API. This tool basically:
+Carb comes with a handy tool to allow developers play around with their own API. This tool basically:
 
- * takes care of adding the proper `Accept` header, used by Ralis to version the API
+ * takes care of adding the proper `Accept` header, used by Carb to version the API
  * allows a developer to set various HTTP methods for a request
  * allows a developer to specify request headers and its body
 

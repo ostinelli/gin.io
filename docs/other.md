@@ -1,16 +1,16 @@
 ---
 layout: docs
-title: RALIS.IO | Other
+title: CARB.IO | Other
 ---
 
 # Other
 
-##### The Ralis object
-In your application, `Ralis` exposes some attributes you might need.
+##### The Carb object
+In your application, `Carb` exposes some attributes you might need.
 
- * `Ralis.env`: returns the current environment (`development`, `test`, `production`, or any other environment you may be running Ralis in)
- * `Ralis.version`: returns the current Ralis version
- * `Ralis.settings`: returns the global settings defined per environment in `./config/settings.lua` (see [Application files](/docs/application_files.html), under `settings.lua`)
+ * `Carb.env`: returns the current environment (`development`, `test`, `production`, or any other environment you may be running Carb in)
+ * `Carb.version`: returns the current Carb version
+ * `Carb.settings`: returns the global settings defined per environment in `./config/settings.lua` (see [Application files](/docs/application_files.html), under `settings.lua`)
 
 
 ##### JSON
@@ -23,20 +23,20 @@ JSON exposes the [CJSON](http://www.kyne.com.au/~mark/software/lua-cjson.php) cl
 
 
 ##### Running in environments
-To run Ralis in an environment different than `development` (the default), ensure this environment has been defined where appropriate (at least in `./config/settings.lua`) and run:
+To run Carb in an environment different than `development` (the default), ensure this environment has been defined where appropriate (at least in `./config/settings.lua`) and run:
 
 ```bash
-$ RALIS_ENV={environment} ralis start
+$ CARB_ENV={environment} carb start
 ```
 
-For instance, to run Ralis in production:
+For instance, to run Carb in production:
 
 ```bash
-$ RALIS_ENV=production ralis start
+$ CARB_ENV=production carb start
 ```
 
 To stop:
 
 ```bash
-$ RALIS_ENV={environment} ralis stop
+$ CARB_ENV={environment} carb stop
 ```
