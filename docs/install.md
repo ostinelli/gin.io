@@ -77,12 +77,16 @@ Check if the Carb client got correctly installed:
 
 ```bash
 $ carb
-CARB v0.1-rc1, a RESTful API web framework. Usage: carb COMMAND [ARGS]
+CARB v0.1-rc1, a JSON-API web framework. Usage: carb COMMAND [ARGS]
 
 The available carb commands are:
- new [name]      Create a new Carb application
- start           Starts the Carb server
- stop            Stops the Carb server
+ new [name]             Create a new Carb application
+ start                  Starts the Carb server
+ stop                   Stops the Carb server
+ generate migration     Create a new SQL migration
+ migrate                Run all SQL migrations that have not been run
+ migrate rollback       Rollback one SQL migration
+
 ```
 
 If you can see both of these, consider your installation of Carb a success!

@@ -20,10 +20,15 @@ A greenfield `demo` application has the following structure:
         |-- initializers
             errors.lua
         application.lua
-        database.lua
         nginx.conf
         routes.lua
         settings.lua
+    |-- db
+        |-- migrations
+            .
+        |-- schemas
+            .
+        db.lua
     |-- lib
         .
     |-- spec
@@ -61,53 +66,6 @@ Application = {
     version = "0.0.1"
 }
 ```
-
-###### `database.lua`
-Your database connections can be defined here. Multiple database can be supported. The generated file contains an example on how to define a connection to a `mysql` database (currently, the only RDBMS database with a Carb ORM):
-
-```lua
-local sqldb = require 'carb.db.sql'
-
--- Here you can setup your databases that will be accessible throughout your application.
--- First, specify the settings (you may add multiple databases with this pattern):
-local DbSettings = {
-
-    development = {
-        adapter = 'mysql',
-        host = "127.0.0.1",
-        port = 3306,
-        database = "carb_development",
-        user = "root",
-        password = "",
-        pool = 5
-    },
-
-    test = {
-        adapter = 'mysql',
-        host = "127.0.0.1",
-        port = 3306,
-        database = "carb_test",
-        user = "root",
-        password = "",
-        pool = 5
-    },
-
-    production = {
-        adapter = 'mysql',
-        host = "127.0.0.1",
-        port = 3306,
-        database = "carb_production",
-        user = "root",
-        password = "",
-        pool = 5
-    }
-}
-
--- Then initialize your database(s) like this:
-DB = sqldb.new(DbSettings[Carb.env])
-```
-
-You may also consider setting connections to [Redis](http://redis.io/), [RabbitMQ](http://www.rabbitmq.com/) or other types of datastores.
 
 ###### `nginx.conf`
 
@@ -192,6 +150,22 @@ For example, `Carb.settings.port` returns the port the server is running on.
 
 ###### ./config/initializers
 All of the `*.lua` files added here will be run as part of the initialization process. By default, it must contain an `errors.lua` file, a single entry point that defines all of the errors that your application can raise. More on errors can be read [here](/docs/errors.html).
+
+##### ./db
+
+This directory is used to namespace everything related to your databases.
+
+###### `db.lua`
+Your database connections can be defined here. Multiple database can be supported. The generated file contains an example on how to define a connection to a `mysql` database (currently, the only RDBMS database with a Carb ORM). Please refer to [models](/docs/models.html) for how to use this file.
+
+You may also consider setting connections to [Redis](http://redis.io/), [RabbitMQ](http://www.rabbitmq.com/) or other types of datastores.
+
+###### ./db/migrations
+This directory contains all of your SQL migrations. Read more about migrations [here](/docs/migrations.html).
+
+###### ./db/schemas
+This directory contains a Lua representation of the current schema of your SQL databases, after having run the migrations.
+
 
 ##### ./lib
 This directory may be used to put any library files you might need to require from your code.

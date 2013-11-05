@@ -5,7 +5,7 @@ title: CARB.IO | Models
 
 # Models
 
-In Carb, you define all of your databases in the config file `./config/database.lua`.
+In Carb, you define all of your databases in the file `./db/db.lua`.
 
 These databases can then be accessed in the various model files located in `./app/models`, where you can implement helper methods to store and query data into and from these databases.
 
@@ -24,13 +24,13 @@ However, Carb does come with a more traditional database helper that allows you 
 
 ###### Define a DB and a model
 
-To create a MySQL model with ORM functionalities, we first need to define a new MySQL database in the file `./config/database.lua`, by specifying the `mysql` adapter like so:
+To create a MySQL model with ORM functionalities, we first need to define a new MySQL database in the file `./db/db.lua`, by requiring Carb's SQL helper and by specifying the `mysql` adapter like so:
 
 ```lua
 local sqldb = require 'carb.db.sql'
 
 -- Here you can setup your databases that will be accessible throughout your application.
--- First, specify the settings (you may add multiple databases with this pattern):
+-- First, specify the settings (you may add multiple databases with this pattern), for instance:
 local DbSettings = {
 
     development = {
@@ -64,8 +64,9 @@ local DbSettings = {
     }
 }
 
--- Then initialize your database(s) like this:
-DB = sqldb.new(DbSettings[Carb.env])
+-- Then initialize your database(s), for instance:
+MYSQLDB = sqldb.new(DbSettings[Carb.env])
+
 ```
 
 In Lua, a variable that is not specifically set as `local` is defined globally. Hence, the database variable `DB` defined here above is a global object available
@@ -74,13 +75,13 @@ throughout your application.
 As you can see, we're defining various database access settings for the three environments `development`, `test` and `production`, and then initializing the
 database object with the settings that correspond to the enivornment Carb is run in (available in `Carb.env`).
 
-> The newly created object `DB` exposes only two functions: `define` (see here below) and `execute(sql)`. The latter allows you to use the `DB` connection anywhere in your application, including models,
-> to perform database queries, by calling `DB:execute(sql)`.
+> The newly created object `MYSQLDB` exposes only two functions: `define` (see here below) and `execute(sql)`. The latter allows you to use the `MYSQLDB` connection anywhere in your application, including models,
+> to perform database queries, by calling `MYSQLDB:execute(sql)`.
 
 Now that we have a database object, we can define a model `Users`. To do so, create the file `./app/models/users.lua` and enter this code:
 
 ```lua
-Users = DB:define('users')
+Users = MYSQLDB:define('users')
 ```
 This defines a model `Users` that corresponds to the database table `users`.
 
