@@ -1,9 +1,9 @@
 # jekyll serve -w
 
-name: CARB.IO
+name: ZEBRA.IO
 description: "A fast, low-latency, low-memory footprint, web JSON-API framework."
 
-url: http://carb.io
+url: http://zebra.io
 
 markdown: redcarpet
 pygments: true

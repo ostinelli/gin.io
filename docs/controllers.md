@@ -1,6 +1,6 @@
 ---
 layout: docs
-title: CARB.IO | Controllers
+title: ZEBRA.IO | Controllers
 ---
 
 
@@ -14,7 +14,7 @@ Here's what a simple controller looks like:
 local InfoController = {}
 
 function InfoController:whoami()
-    return 200, { name = 'carb' }
+    return 200, { name = 'zebra' }
 end
 
 return InfoController
@@ -35,18 +35,18 @@ Returning only the HTTP code will respond with the provided code, an empty JSON 
 ###### The HTTP code and the body
 
 ```lua
-return 200, { name = 'carb' }
+return 200, { name = 'zebra' }
 ```
 
-Carb will respond with the provided code and the encoded JSON body, with no additional headers.
+Zebra will respond with the provided code and the encoded JSON body, with no additional headers.
 
 ###### The HTTP code, the body and the headers
 
 ```lua
-return 200, { name = 'carb' }, { ["Cache-Control"] = "max-age=3600", ["Retry-After"] = "120" }
+return 200, { name = 'zebra' }, { ["Cache-Control"] = "max-age=3600", ["Retry-After"] = "120" }
 ```
 
-Carb will respond with the provided code, the encoded JSON body, and the additional headers.
+Zebra will respond with the provided code, the encoded JSON body, and the additional headers.
 
 
 ##### Raising errors
@@ -117,7 +117,7 @@ The original request is available in a controller's action and accessible on sel
 self.request
 ```
 
-> Carb only accepts requests that provide JSON in the body, hence the body is available to you pre-parsed for your convenience.
+> Zebra only accepts requests that provide JSON in the body, hence the body is available to you pre-parsed for your convenience.
 
 The request has the following properties:
 
@@ -136,9 +136,9 @@ It also provide these additional advanced properties:
 
 ##### Minor version support
 
-While support for major version numbers is baked into Carb by calling the controllers that correspond to a major version number, minor versioning logic can be implemented at a controller level.
+While support for major version numbers is baked into Zebra by calling the controllers that correspond to a major version number, minor versioning logic can be implemented at a controller level.
 
-Let's say that a client requests the specific version `1.0.2-rc1` in the request headers. Carb will automatically support major versioning by calling the controller located in the corresponding directory `./app/controllers/1`, but then in your controller the full version requested by the client is available in the parameter `self.request.api_version`.
+Let's say that a client requests the specific version `1.0.2-rc1` in the request headers. Zebra will automatically support major versioning by calling the controller located in the corresponding directory `./app/controllers/1`, but then in your controller the full version requested by the client is available in the parameter `self.request.api_version`.
 
 A very simple logic looks like this:
 
@@ -147,9 +147,9 @@ local InfoController = {}
 
 function InfoController:whoami()
     if self.request.api_version == "1.0.2-rc1" then
-        return 200, { name = "carb newer" }
+        return 200, { name = "zebra newer" }
     else
-        return 200, { name = "carb standard" }
+        return 200, { name = "zebra standard" }
     end
 end
 

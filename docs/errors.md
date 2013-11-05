@@ -1,6 +1,6 @@
 ---
 layout: docs
-title: CARB.IO | Errors
+title: ZEBRA.IO | Errors
 ---
 
 
@@ -39,12 +39,12 @@ As per this example, this will return a HTTP status `400`, with the specified he
 }
 ```
 
-> Your application's error numbers must be greater than `1000`. All errors numbers from `0` to `999` are reserved for Carb.
+> Your application's error numbers must be greater than `1000`. All errors numbers from `0` to `999` are reserved for Zebra.
 
-##### Carb error responses
+##### Zebra error responses
 
 
-If no `Accept` header is provided by a client, Carb will respond with a `412` HTTP status and a JSON body specifying the following error:
+If no `Accept` header is provided by a client, Zebra will respond with a `412` HTTP status and a JSON body specifying the following error:
 
 ```javascript
 {
@@ -53,7 +53,7 @@ If no `Accept` header is provided by a client, Carb will respond with a `412` HT
 }
 ```
 
-If an invalid `Accept` header is provided by a client, Carb will respond with a `412` HTTP status and a JSON body specifying the following error:
+If an invalid `Accept` header is provided by a client, Zebra will respond with a `412` HTTP status and a JSON body specifying the following error:
 
 ```javascript
 {
@@ -62,7 +62,7 @@ If an invalid `Accept` header is provided by a client, Carb will respond with a 
 }
 ```
 
-If the API version specified by the client is not supported by your application, Carb will respond with a `412` HTTP status and a JSON body specifying the following error:
+If the API version specified by the client is not supported by your application, Zebra will respond with a `412` HTTP status and a JSON body specifying the following error:
 
 ```javascript
 {
@@ -71,7 +71,7 @@ If the API version specified by the client is not supported by your application,
 }
 ```
 
-If the JSON body provided in a request is invalid, Carb will respond with a `400` HTTP status and a JSON body specifying the following error:
+If the JSON body provided in a request is invalid, Zebra will respond with a `400` HTTP status and a JSON body specifying the following error:
 
 ```javascript
 {
@@ -80,7 +80,7 @@ If the JSON body provided in a request is invalid, Carb will respond with a `400
 }
 ```
 
-If the JSON body provided in a request is not a JSON hash, Carb will respond with a `400` HTTP status and a JSON body specifying the following error:
+If the JSON body provided in a request is not a JSON hash, Zebra will respond with a `400` HTTP status and a JSON body specifying the following error:
 
 ```javascript
 {

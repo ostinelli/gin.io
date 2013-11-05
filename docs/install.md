@@ -1,12 +1,12 @@
 ---
 layout: docs
-title: CARB.IO | Install
+title: ZEBRA.IO | Install
 ---
 
 # Install
 
 ### On OSX
-These instructions allow you to install Carb on a OSX developer machine.
+These instructions allow you to install Zebra on a OSX developer machine.
 
 ##### Homebrew
 The instructions here below will assume that you have [HomeBrew](http://brew.sh/) installed.
@@ -17,7 +17,7 @@ $ ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
 ```
 
 ##### OpenResty
-Carb runs on [OpenResty](http://openresty.org/), a customized bundle of [Nginx](http://nginx.org/).
+Zebra runs on [OpenResty](http://openresty.org/), a customized bundle of [Nginx](http://nginx.org/).
 
  * Install Perl Compatible Regular Expressions & LuaJIT
 
@@ -57,10 +57,10 @@ Lua and a lua package manager.
 $ brew install lua luarocks
 ```
 
-##### Carb
+##### Zebra
 ```bash
-$ git clone git@github.com:ostinelli/carb.git
-$ cd carb
+$ git clone git@github.com:ostinelli/zebra.git
+$ cd zebra
 $ luarocks make
 ```
 
@@ -73,22 +73,22 @@ $ nginx -v
 nginx version: ngx_openresty/1.2.8.6
 ```
 
-Check if the Carb client got correctly installed:
+Check if the Zebra client got correctly installed:
 
 ```bash
-$ carb
-CARB v0.1-rc1, a JSON-API web framework. Usage: carb COMMAND [ARGS]
+$ zebra
+ZEBRA v0.1-rc1, a JSON-API web framework. Usage: zebra COMMAND [ARGS]
 
-The available carb commands are:
- new [name]             Create a new Carb application
- start                  Starts the Carb server
- stop                   Stops the Carb server
+The available zebra commands are:
+ new [name]             Create a new Zebra application
+ start                  Starts the Zebra server
+ stop                   Stops the Zebra server
  generate migration     Create a new SQL migration
  migrate                Run all SQL migrations that have not been run
  migrate rollback       Rollback one SQL migration
 
 ```
 
-If you can see both of these, consider your installation of Carb a success!
+If you can see both of these, consider your installation of Zebra a success!
 
-You can now proceed to [Getting Started](/docs/getting_started.html) to create your first Carb app.
+You can now proceed to [Getting Started](/docs/getting_started.html) to create your first Zebra app.

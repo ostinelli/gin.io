@@ -1,6 +1,6 @@
 ---
 layout: docs
-title: CARB.IO | API Console
+title: ZEBRA.IO | API Console
 ---
 
 
@@ -26,7 +26,7 @@ Let's see what these lines do. The first line specifies a container for version 
 local v1 = Routes.version(1)
 ```
 
-> Carb require an integer number to define a version, as these routes are defined for major versions only. If you need to provide support for minor versions, it is possible to do so in [controllers](/docs/controllers.html).
+> Zebra require an integer number to define a version, as these routes are defined for major versions only. If you need to provide support for minor versions, it is possible to do so in [controllers](/docs/controllers.html).
 
 The other lines specify HTTP action routes specific to version `1`. For example:
 
@@ -68,7 +68,7 @@ v1:GET("/users/:id", { controller = "users", action = "show" })
 
 This line routes all HTTP `GET` requests to `/users/{id}` to the action `show` of the controller `users_controller.lua`.
 
-Inside of the controller, the named parameter `:id` will be available as `self.params.id`. For example, in a `GET` request to `/users/carb`, the value of `self.params.id` in the controller's action `show` will be `carb`.
+Inside of the controller, the named parameter `:id` will be available as `self.params.id`. For example, in a `GET` request to `/users/zebra`, the value of `self.params.id` in the controller's action `show` will be `zebra`.
 
 Nested named routes are possible, for instance:
 

@@ -1,6 +1,6 @@
 ---
 layout: default
-title: CARB.IO | Tutorial
+title: ZEBRA.IO | Tutorial
 ---
 
 # Tutorial

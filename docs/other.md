@@ -1,16 +1,16 @@
 ---
 layout: docs
-title: CARB.IO | Other
+title: ZEBRA.IO | Other
 ---
 
 # Other
 
-##### The Carb object
-In your application, `Carb` exposes some attributes you might need.
+##### The Zebra object
+In your application, `Zebra` exposes some attributes you might need.
 
- * `Carb.env`: returns the current environment (`development`, `test`, `production`, or any other environment you may be running Carb in)
- * `Carb.version`: returns the current Carb version
- * `Carb.settings`: returns the global settings defined per environment in `./config/settings.lua` (see [Application files](/docs/application_files.html), under `settings.lua`)
+ * `Zebra.env`: returns the current environment (`development`, `test`, `production`, or any other environment you may be running Zebra in)
+ * `Zebra.version`: returns the current Zebra version
+ * `Zebra.settings`: returns the global settings defined per environment in `./config/settings.lua` (see [Application files](/docs/application_files.html), under `settings.lua`)
 
 
 ##### JSON
@@ -23,20 +23,20 @@ JSON exposes the [CJSON](http://www.kyne.com.au/~mark/software/lua-cjson.php) cl
 
 
 ##### Running in environments
-To run Carb in an environment different than `development` (the default), ensure this environment has been defined where appropriate (at least in `./config/settings.lua`) and run:
+To run Zebra in an environment different than `development` (the default), ensure this environment has been defined where appropriate (at least in `./config/settings.lua`) and run:
 
 ```bash
-$ CARB_ENV={environment} carb start
+$ ZEBRA_ENV={environment} zebra start
 ```
 
-For instance, to run Carb in production:
+For instance, to run Zebra in production:
 
 ```bash
-$ CARB_ENV=production carb start
+$ ZEBRA_ENV=production zebra start
 ```
 
 To stop:
 
 ```bash
-$ CARB_ENV={environment} carb stop
+$ ZEBRA_ENV={environment} zebra stop
 ```
