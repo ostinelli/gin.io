@@ -4,9 +4,9 @@
   right: 0;
   left: 0;
   z-index: 999;
-
   height: $header_height;
-  background: $nav_background;
+
+  background: $nav_background url(asset_path('zebra-bg-blue.jpg')) repeat;
   color: $white;
 
   a {
