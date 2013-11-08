@@ -27,11 +27,12 @@ return InfoController
 
 Zebra already provides:
 
+ * [API Versioning](/docs/api_versioning.html) embedded in the framework
+ * [Routes](/docs/routes.html) with named and pattern routes support
  * [Controllers](/docs/controllers.html)
  * [Models](/docs/models.html) and a MySql ORM
- * [API Versioning](/docs/api_versioning.html) embedded in the framework using headers
+ * [Migrations](/docs/migrations.html) for SQL engines
  * [Test helpers](/docs/testing.html) and wrappers
- * [Routes](/docs/routes.html) with named and pattern routes support
  * Simple [error](/docs/errors.html) raising and definition
  * Support for multiple databases in your application
  * An embedded [API Console](/docs/api_console.html) to play with your API
