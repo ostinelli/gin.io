@@ -69,13 +69,13 @@ MYSQLDB = sqldb.new(DbSettings[Zebra.env])
 
 ```
 
-In Lua, a variable that is not specifically set as `local` is defined globally. Hence, the database variable `DB` defined here above is a global object available
+In Lua, a variable that is not specifically set as `local` is defined globally. Hence, the database variable `MYSQLDB` defined here above is a global object available
 throughout your application.
 
 As you can see, we're defining various database access settings for the three environments `development`, `test` and `production`, and then initializing the
 database object with the settings that correspond to the enivornment Zebra is run in (available in `Zebra.env`).
 
-> The newly created object `MYSQLDB` exposes only two functions: `define` (see here below) and `execute(sql)`. The latter allows you to use the `MYSQLDB` connection anywhere in your application, including models,
+> The newly created object `MYSQLDB` mainly exposes two functions: `define` (see here below) and `execute(sql)`. The latter allows you to use the `MYSQLDB` connection anywhere in your application, including models,
 > to perform database queries, by calling `MYSQLDB:execute(sql)`.
 
 Now that we have a database object, we can define a model `Users`. To do so, create the file `./app/models/users.lua` and enter this code:
