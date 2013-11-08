@@ -99,7 +99,7 @@ If you're planning to use MySql, you'll need to have an installed MySql copy tog
     Now that you have MySql installed with the header files, proceed to install LuaSql for MySql:
 
     ```bash
-    luarocks install LuaSQL-MySQL
+    luarocks install luasql-mysql
     ```
 
 
