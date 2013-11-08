@@ -123,26 +123,31 @@ local Settings = {}
 
 Settings.development = {
     code_cache = false,
-    port = 7200
+    port = 7200,
+    expose_api_console = true
 }
 
 Settings.test = {
     code_cache = true,
-    port = 7201
+    port = 7201,
+    expose_api_console = false
 }
 
 Settings.production = {
     code_cache = true,
-    port = 80
+    port = 80,
+    expose_api_console = false
 }
 
 return Settings
+
 ```
 
-The two parameters that need to be specified on every environment are:
+The three Zebra parameters that can be specified in every environment are:
 
-* `code_cache`: whether to cache code or not. If set to `false`, the code will reload on every page request. This is to be used for development purposes only, as it has a considerable performance impact. Set this to `true` on production environments. This value defaults to `false` for the `development` environment, to `true` for `test` and `production` environments.
-* `port`: the port to be used by `nginx`. This value default to `7200` for the `development` environment, to `7201` for the `test` environment and to `80` for the `production` environment.
+* `code_cache`: whether to cache code or not. If set to `false`, the code will reload on every page request. This is to be used for development purposes only, as it has a considerable performance impact. Set this to `true` on production environments. This value defaults to `false` for the `development` environment, to `true` for all the other environments.
+* `port`: the port to be used by `nginx`. This value default to `7200` for the `development` environment, to `7201` for the `test` environment and to `80` for all of the other environments (including `production`).
+* `expose_api_console`: if set to `true`, expose the [API Console](/docs/api_console.html). Defaults to `true` for the `development` environment, to `false` for all of the other environments.
 
 You may also specify your own custom settings in here. All of the setting parameters specified in this file will be available inside your application: `Zebra.settings` will return the ones that correspond to the environment you are running the server in.
 For example, `Zebra.settings.port` returns the port the server is running on.
