@@ -9,8 +9,8 @@ title: ZEBRA.IO | Install
 These instructions allow you to install Zebra on a OSX developer machine.
 
 ##### Homebrew
-The instructions here below will assume that you have [HomeBrew](http://brew.sh/) installed.
-If you don't have it, you can easily install it by running:
+The instructions here below describe the installation flow using [HomeBrew](http://brew.sh/).
+If you don't have it installed, you can easily install it by running:
 
 ```bash
 $ ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
@@ -50,34 +50,102 @@ Zebra runs on [OpenResty](http://openresty.org/), a customized bundle of [Nginx]
     export PATH=/usr/local/openresty/nginx/sbin:$PATH
     ```
 
+ * Check to see if OpenResty got successfully installed
+
+    ```bash
+    $ nginx -v
+    nginx version: ngx_openresty/1.2.8.6
+    ```
+
 ##### Lua & Luarocks
-Lua and a lua package manager.
+Install Lua and its package manager.
 
 ```bash
 $ brew install lua luarocks
 ```
 
+
+##### MySql
+If you're planning to use MySql, you'll need to have an installed MySql copy together with its header files so that [LuaSql](http://www.keplerproject.org/luasql/) can be compiled.
+
+* Install MySql server and its header files
+
+    ```bash
+    $ brew install mysql
+    ```
+
+    Ensure that it is installed:
+
+    ```bash
+    $ mysql --version
+    mysql  Ver 14.14 Distrib 5.6.13, for osx10.9 (x86_64) using  EditLine wrapper
+    ```
+
+    You may optionally want to start it automatically upon login, if so:
+
+    ```bash
+    $ cp /usr/local/Cellar/mysql/MYSQL-VERSION/homebrew.mxcl.mysql.plist ~/Library/LaunchAgents/
+    ```
+
+    To launch it immediately without rebooting your box:
+
+    ```bash
+    $ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
+    ```
+
+
+* Install LuaSql
+
+    Now that you have MySql installed with the header files, proceed to install LuaSql for MySql:
+
+    ```bash
+    luarocks install LuaSQL-MySQL
+    ```
+
+
 ##### Zebra
+To install Zebra, issue the commands:
+
 ```bash
 $ git clone git@github.com:ostinelli/zebra.git
 $ cd zebra
 $ luarocks make
 ```
 
-# Test installation
-
-Check to see if OpenResty got successfully installed:
-
-```bash
-$ nginx -v
-nginx version: ngx_openresty/1.2.8.6
-```
-
 Check if the Zebra client got correctly installed:
 
 ```bash
 $ zebra
-ZEBRA v0.1-rc1, a JSON-API web framework. Usage: zebra COMMAND [ARGS]
+
+                 ```-`.
+             -.-/++.:sdo+.-+:
+    `.--::. `s.dh:.++:/MM/`oMms-`
+     /`/dhyoydh-dMs .s/oMM/ oMM-/y`
+     `s.sMMN-.hd+sh- +:+NMd -MMh.Md:-
+       ///+so .+:+:-/.:om:mo:mMy.MMNd
+         `-:/:o+/-:`dy. yNym`/MNyMMMM.+`
+          :/ss.--:/ `dN:.Mdyh sMMmNMd/m:
+         +-od`./ho `.-Md MMhM. yMN-d/yM+
+        -N/s+-md.   `+M:oMMMM:  dMo/mNM+
+        yydh:NM-   o.sd:N/MMM.  +Ms:sMd:`
+       `s-ymsMN     `ddoy mMs   +M:o:msy`
+       ://-MsMs  ./+`/M+d dMh   dd`m`dMm
+       +:/:dod:yhohN+-Mhd-mMm  oM++s hMy
+       s:`ysdsMo.mMMohMhN:NMh /MM-/``NM-
+      .s.:+moM+.mMMh/mhsm:Md./MMM-  oMy
+      +`.-m:m+-ms+h.hs/sNh:`sMMMM- -MN.
+     : ``o.y:/d--N.y/mhy: /mMMMMN `mM/
+   ``    `:.o/  .hsy+-`-omh/+MMN:`dM+
+  +-  .-   -.` ./`+oydMNs.`/NMh.`dM+
+ .h: /sN   .--./  hhs+:/ohNms- :mN:
+  `-. .`    o+o. :o-odNds/.  .yMy`
+    + ``   +mm:o /h+:.     :yMd-
+    `::://syy+.s  o`  `:+hNNs-
+          .::::    -/shhs+-
+
+ZEBRA v0.0.1, a JSON-API web framework.
+
+Usage: zebra COMMAND [ARGS]
 
 The available zebra commands are:
  new [name]             Create a new Zebra application
@@ -86,9 +154,10 @@ The available zebra commands are:
  generate migration     Create a new SQL migration
  migrate                Run all SQL migrations that have not been run
  migrate rollback       Rollback one SQL migration
+ console                Start a Zebra console
 
 ```
 
-If you can see both of these, consider your installation of Zebra a success!
+If you can see this, consider your installation of Zebra a success!
 
 You can now proceed to [Getting Started](/docs/getting_started.html) to create your first Zebra app.
