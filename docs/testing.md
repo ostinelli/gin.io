@@ -48,7 +48,8 @@ The `hit` helper returns a response object, that has the following attributes:
 
  * `status`: the response status (a numeric value)
  * `headers`: the response headers (a Lua `table`).
- * `body`: the response body  (a Lua `table`).
+ * `body`: the response body (a Lua `table`).
+ * `body_raw`: the unparsed response body (a `string`).
 
 
 #### Models
