@@ -3,7 +3,8 @@ layout: home
 title: ZEBRA.IO
 ---
 
-# Welcome
+
+# ZEBRA
 
 Zebra is an JSON-API framework, currently in its early stage.
 
@@ -38,4 +39,4 @@ Zebra already provides:
  * An embedded [API Console](/docs/api_console.html) to play with your API
  * A client to create, start and stop your applications
 
-Get started now! Start reading our [docs](/docs/install.html) or go for our simple [tutorial](tutorial.html).
+Get started now! Start reading our [docs](/docs/install.html) or go for our comprehensive [tutorial](tutorial.html).
