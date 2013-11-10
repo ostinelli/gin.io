@@ -45,6 +45,7 @@ The greenfield application just created for you comes with a simple controller a
 ```bash
 $ busted
 
+●
 1 success / 0 failures / 0 pending : 0.039959 seconds.
 ```
 

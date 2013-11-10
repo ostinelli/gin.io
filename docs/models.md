@@ -83,7 +83,7 @@ Now that we have a database object, we can define a model `Users`. To do so, cre
 ```lua
 Users = MYSQLDB:define('users')
 ```
-This defines a model `Users` that corresponds to the database table `users`.
+This defines a model `Users` that corresponds to the database table `users`, for the database connection `MYSQLDB`.
 
 > For the ORM to work properly, the table `users` must have an `AUTO_INCREMENT PRIMARY KEY` named `id`. Please refer to [migrations](/docs/migrations.html) for additional information.
 
