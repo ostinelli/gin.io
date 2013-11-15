@@ -1,11 +1,11 @@
 ---
 layout: docs
-title: ZEBRA.IO | Models
+title: GIN.IO | Models
 ---
 
 # Models
 
-In Zebra, you define all of your databases in the file `./db/db.lua`.
+In Gin, you define all of your databases in the file `./db/db.lua`.
 
 These databases can then be accessed in the various model files located in `./app/models`, where you can implement helper methods to store and query data into and from these databases.
 
@@ -13,9 +13,9 @@ This is an extremely flexible and powerful design, as it allows you to implement
 (for example [Redis](redis.io), [RabbitMQ](http://www.rabbitmq.com/), [NoSQL databases](http://en.wikipedia.org/wiki/NoSQL), but also regular SQL databases such as
 [MySQL](http://www.mysql.com/) or [PostgreSQL](http://www.postgresql.org/)).
 
-> In Zebra, a model is therefore not necessarily a SQL database object representation.
+> In Gin, a model is therefore not necessarily a SQL database object representation.
 
-However, Zebra does come with a more traditional database helper that allows you to quickly define models that have SQL Object-Relational Mapping functionalities.
+However, Gin does come with a more traditional database helper that allows you to quickly define models that have SQL Object-Relational Mapping functionalities.
 
 > Currently, only a MySQL adapter and ORM are supported.
 
@@ -24,10 +24,10 @@ However, Zebra does come with a more traditional database helper that allows you
 
 ###### Define a DB and a model
 
-To create a MySQL model with ORM functionalities, we first need to define a new MySQL database in the file `./db/db.lua`, by requiring Zebra's SQL helper and by specifying the `mysql` adapter like so:
+To create a MySQL model with ORM functionalities, we first need to define a new MySQL database in the file `./db/db.lua`, by requiring Gin's SQL helper and by specifying the `mysql` adapter like so:
 
 ```lua
-local sqldb = require 'zebra.db.sql'
+local sqldb = require 'gin.db.sql'
 
 -- Here you can setup your databases that will be accessible throughout your application.
 -- First, specify the settings (you may add multiple databases with this pattern), for instance:
@@ -65,7 +65,7 @@ local DbSettings = {
 }
 
 -- Then initialize your database(s), for instance:
-MYSQLDB = sqldb.new(DbSettings[Zebra.env])
+MYSQLDB = sqldb.new(DbSettings[Gin.env])
 
 ```
 
@@ -73,7 +73,7 @@ In Lua, a variable that is not specifically set as `local` is defined globally. 
 throughout your application.
 
 As you can see, we're defining various database access settings for the three environments `development`, `test` and `production`, and then initializing the
-database object with the settings that correspond to the enivornment Zebra is run in (available in `Zebra.env`).
+database object with the settings that correspond to the enivornment Gin is run in (available in `Gin.env`).
 
 > The newly created object `MYSQLDB` mainly exposes two functions: `define` (see here below) and `execute(sql)`. The latter allows you to use the `MYSQLDB` connection anywhere in your application, including models,
 > to perform database queries, by calling `MYSQLDB:execute(sql)`.
@@ -96,14 +96,14 @@ The `Users` model defined here above can now be used to perform standard SQL que
  This returns the newly created user object. For example:
 
  ```lua
- local user = Users.new({ first_name = 'zebra' })
+ local user = Users.new({ first_name = 'gin' })
  ```
 
  * `Users.create(attrs)`: creates and saves a new user with the passed in attributes. The attributes must correspond to the ones defined in the table `users`.
  This returns the newly created user object, with the sequence `id` that was returned by MySQL. For example:
 
  ```lua
- local user = Users.create({ first_name = 'zebra' })
+ local user = Users.create({ first_name = 'gin' })
  user.id -- => 1
  ```
 
@@ -116,13 +116,13 @@ The `Users` model defined here above can now be used to perform standard SQL que
  * `Users.where(attrs, options)`: returns users that match the query specified in attributes. If provided, `options` is a table that can specify the `limit`, the `offset` and the `order` of the resultset. For example:
 
  ```lua
- local users = Users.where({ first_name = 'zebra'}, { limit = 5, offset = 10, order = "first_name DESC" } )
+ local users = Users.where({ first_name = 'gin'}, { limit = 5, offset = 10, order = "first_name DESC" } )
  ```
 
  * `Users.find_by(attrs, options)`: same as `.where`, but will return only the first match. If provided, `options` is a table that can specify the `order` of the resultset. For example:
 
  ```lua
- local user = Users.find_by({ first_name = 'zebra'})
+ local user = Users.find_by({ first_name = 'gin'})
  ```
 
  * `Users.delete_all(options)`: deletes all users. If provided, `options` is a table that can specify the `limit` of the row count. For example:
@@ -134,26 +134,26 @@ The `Users` model defined here above can now be used to perform standard SQL que
  * `Users.delete_where(attrs, options)`: deletes all users that match the query specified in attributes. If provided, `options` is a table that can specify the `limit` of the row count. For example:
 
  ```lua
- local users = Users.delete_where({ first_name = 'zebra'}, { limit = 5 })
+ local users = Users.delete_where({ first_name = 'gin'}, { limit = 5 })
  ```
 
  * `user:save()`: saves a new model instance or updates an existing one. For example:
 
  ```lua
- local user = Users.new({ first_name = 'zebra' })
+ local user = Users.new({ first_name = 'gin' })
  user:save()
  ```
 
  * `user:delete()`: deletes a model instance. For example:
 
  ```lua
- local user = Users.find_by({ first_name = 'zebra' })
+ local user = Users.find_by({ first_name = 'gin' })
  user:delete()
  ```
 
  * `user:class()`: returns a model's instance's class. For example:
 
  ```lua
- local user = Users.create({ first_name = 'zebra' })
+ local user = Users.create({ first_name = 'gin' })
  user:class() -- => Users
  ```

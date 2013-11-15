@@ -1,16 +1,16 @@
 ---
 layout: docs
-title: ZEBRA.IO | Migrations
+title: GIN.IO | Migrations
 ---
 
 
 # Migrations
-Zebra implements a migration engine to help you handle the evolution of your databases. It currently only supports the SQL databases available in Zebra (see [models](/docs/models.html)).
+Gin implements a migration engine to help you handle the evolution of your databases. It currently only supports the SQL databases available in Gin (see [models](/docs/models.html)).
 
 To create a new migration:
 
 ```bash
-$ zebra generate migration
+$ gin generate migration
 Created new migration file
   db/migrations/20131107134407.lua
 ```
@@ -20,7 +20,7 @@ The migration name is just the timestamp of the moment the migration file was cr
 ```lua
 local SqlMigration = {}
 
--- specify the database used in this migration (needed by the Zebra migration engine)
+-- specify the database used in this migration (needed by the Gin migration engine)
 -- SqlMigration.db = MYSQLDB
 
 function SqlMigration.up()
@@ -36,8 +36,8 @@ return SqlMigration
 To set up a migration, you need to define:
 
  * the `SqlMigration.db`, which must be one of the available databases specified in `./db/db.lua` (see [application files](/docs/application_files.html) for more info).
- * the `SqlMigration.up()` function, where you basically execute a SQL statement on the specified db. This function will be called by the Zebra migration engine when running the migration.
- * the `SqlMigration.down()` function, where you execute a SQL statement on the specified db. This function will be called by the Zebra migration engine when rolling back the migration.
+ * the `SqlMigration.up()` function, where you basically execute a SQL statement on the specified db. This function will be called by the Gin migration engine when running the migration.
+ * the `SqlMigration.down()` function, where you execute a SQL statement on the specified db. This function will be called by the Gin migration engine when rolling back the migration.
 
 The following example migration file shows the creation of a `users` table, and the rollback of the migration which drops the table:
 
@@ -69,20 +69,20 @@ return SqlMigration
 To run the migration:
 
 ```bash
-$ zebra migrate
+$ gin migrate
 Migrating up in development environment
 Database 'demo_development' does not exist, created.
 ==> Successfully applied migration: 20131107134407
 ```
 
-> The Zebra migration engine will also take care to generate the environment database if it doesn't exist yet.
+> The Gin migration engine will also take care to generate the environment database if it doesn't exist yet.
 
 You will now have the database `demo_development`
 
 To rollback a single migration:
 
 ```bash
-$ zebra migrate rollback
+$ gin migrate rollback
 Rolling back one migration in development environment
 <== Successfully rolled back migration: 20131107134407
 ```

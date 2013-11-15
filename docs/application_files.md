@@ -1,6 +1,6 @@
 ---
 layout: docs
-title: ZEBRA.IO | Application Files
+title: GIN.IO | Application Files
 ---
 
 
@@ -69,11 +69,11 @@ Application = {
 
 ###### `nginx.conf`
 
-This file will be used to dinamically generate the file that will be used by an instance of OpenResty's `nginx`. It contains the necessary code to make Zebra work, but can be customized at will like a normal `nginx.conf` file (for example, to add SSL support).
+This file will be used to dinamically generate the file that will be used by an instance of OpenResty's `nginx`. It contains the necessary code to make Gin work, but can be customized at will like a normal `nginx.conf` file (for example, to add SSL support).
 
 ```
 worker_processes 1;
-pid tmp/{{ "{{ZEBRA_ENV" }}}}-nginx.pid;
+pid tmp/{{ "{{GIN_ENV" }}}}-nginx.pid;
 
 events {
     worker_connections 1024;
@@ -82,21 +82,21 @@ events {
 http {
     sendfile on;
 
-    lua_code_cache {{ "{{ZEBRA_CODE_CACHE" }}}};
+    lua_code_cache {{ "{{GIN_CODE_CACHE" }}}};
     lua_package_path "./?.lua;$prefix/lib/?.lua;#{= LUA_PACKAGE_PATH };;";
 
     server {
-        access_log logs/{{ "{{ZEBRA_ENV" }}}}-access.log;
-        error_log logs/{{ "{{ZEBRA_ENV" }}}}-error.log;
+        access_log logs/{{ "{{GIN_ENV" }}}}-access.log;
+        error_log logs/{{ "{{GIN_ENV" }}}}-error.log;
 
-        listen {{ "{{ZEBRA_PORT" }}}};
+        listen {{ "{{GIN_PORT" }}}};
 
         location / {
-            content_by_lua 'require(\"zebra.core.router\").handler(ngx)';
+            content_by_lua 'require(\"gin.core.router\").handler(ngx)';
         }
 
-        location /zebraconsole {
-            {{ "{{ZEBRA_API_CONSOLE" }}}}
+        location /ginconsole {
+            {{ "{{GIN_API_CONSOLE" }}}}
         }
     }
 }
@@ -104,19 +104,19 @@ http {
 
  You can see that it contains 3 parameters, all of which takes values defined in the `settings.lua` file (see here below):
 
- * `{{ "{{ZEBRA_ENV" }}}}`: it contains the Zebra environment the server is run on, such as `development`, `production`, etc
- * `{{ "{{ZEBRA_CODE_CACHE" }}}}`: can be `on` or `off`
- * `{{ "{{ZEBRA_PORT" }}}}`: ` {{ZEBRA_PORT}}`: the `nginx` port
+ * `{{ "{{GIN_ENV" }}}}`: it contains the Gin environment the server is run on, such as `development`, `production`, etc
+ * `{{ "{{GIN_CODE_CACHE" }}}}`: can be `on` or `off`
+ * `{{ "{{GIN_PORT" }}}}`: ` {{GIN_PORT}}`: the `nginx` port
 
 
-It also contains one last parameter, not specified in `settings.lua` file: `{{ "{{ZEBRA_API_CONSOLE" }}}}`, a helper to set the code needed to run the [API console](/docs/api_console.html) out of a specific directory (by default, `/zebraconsole`).
+It also contains one last parameter, not specified in `settings.lua` file: `{{ "{{GIN_API_CONSOLE" }}}}`, a helper to set the code needed to run the [API console](/docs/api_console.html) out of a specific directory (by default, `/ginconsole`).
 
 
 ###### `routes.lua`
 This is where your application's versioned routes get defined. You can read more on routes [here](/docs/routes.html).
 
 ###### `settings.lua`
-This file defines the Zebra environments, and the settings to be used for every one of them. By default, Zebra defines three environments: `development`, `test` and `production`. This is what a basic file looks like:
+This file defines the Gin environments, and the settings to be used for every one of them. By default, Gin defines three environments: `development`, `test` and `production`. This is what a basic file looks like:
 
 ```lua
 local Settings = {}
@@ -143,14 +143,14 @@ return Settings
 
 ```
 
-The three Zebra parameters that can be specified in every environment are:
+The three Gin parameters that can be specified in every environment are:
 
 * `code_cache`: whether to cache code or not. If set to `false`, the code will reload on every page request. This is to be used for development purposes only, as it has a considerable performance impact. Set this to `true` on production environments. This value defaults to `false` for the `development` environment, to `true` for all the other environments.
 * `port`: the port to be used by `nginx`. This value default to `7200` for the `development` environment, to `7201` for the `test` environment and to `80` for all of the other environments (including `production`).
 * `expose_api_console`: if set to `true`, expose the [API Console](/docs/api_console.html). Defaults to `true` for the `development` environment, to `false` for all of the other environments.
 
-You may also specify your own custom settings in here. All of the setting parameters specified in this file will be available inside your application: `Zebra.settings` will return the ones that correspond to the environment you are running the server in.
-For example, `Zebra.settings.port` returns the port the server is running on.
+You may also specify your own custom settings in here. All of the setting parameters specified in this file will be available inside your application: `Gin.settings` will return the ones that correspond to the environment you are running the server in.
+For example, `Gin.settings.port` returns the port the server is running on.
 
 
 ###### ./config/initializers
@@ -161,7 +161,7 @@ All of the `*.lua` files added here will be run as part of the initialization pr
 This directory is used to namespace everything related to your databases.
 
 ###### `db.lua`
-Your database connections can be defined here. Multiple database can be supported. The generated file contains an example on how to define a connection to a `mysql` database (currently, the only RDBMS database with a Zebra ORM). Please refer to [models](/docs/models.html) for how to use this file.
+Your database connections can be defined here. Multiple database can be supported. The generated file contains an example on how to define a connection to a `mysql` database (currently, the only RDBMS database with a Gin ORM). Please refer to [models](/docs/models.html) for how to use this file.
 
 You may also consider setting connections to [Redis](http://redis.io/), [RabbitMQ](http://www.rabbitmq.com/) or other types of datastores.
 
@@ -176,6 +176,6 @@ This directory contains a Lua representation of the current schema of your SQL d
 This directory may be used to put any library files you might need to require from your code.
 
 ##### ./spec
-Zebra comes with test helpers to test drive your code. By convention, the subdirectories and filenames match the ones defined in the `./app` directory, with one caveat: all of the test files must have their name end in `*_spec.lua`.
+Gin comes with test helpers to test drive your code. By convention, the subdirectories and filenames match the ones defined in the `./app` directory, with one caveat: all of the test files must have their name end in `*_spec.lua`.
 
 The `spec_helper.lua` file is a helper file that needs to be included in all of your tests to be able to access test runners. You may however also use it to define your own custom test helpers.

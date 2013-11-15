@@ -1,22 +1,22 @@
 ---
 layout: home
-title: ZEBRA.IO | Tutorial
+title: GIN.IO | Tutorial
 ---
 
 
 # Tutorial
-This is a simple tutorial showing how to build a Zebra application from the grounds up.
+This is a simple tutorial showing how to build a Gin application from the grounds up.
 
 This tutorial showcases the use of [Test-Driven Development](http://en.wikipedia.org/wiki/Test-driven_development) techniques to build a simple application that allows to see a list of users, and perform basic operations on them.
 
-> For the purpose of this tutorial we have omitted API authentication. We also assume that you have Zebra and MySql properly installed. If not, follow the [install instructions](/docs/install.html) before proceeding.
+> For the purpose of this tutorial we have omitted API authentication. We also assume that you have Gin and MySql properly installed. If not, follow the [install instructions](/docs/install.html) before proceeding.
 
 
 ###### Create application
 Let's create an application called `demo`:
 
 ```bash
-$ zebra new demo
+$ gin new demo
 Creating app demo...
   created file demo/spec/models/.gitkeep
   created file demo/app/models/.gitkeep
@@ -141,7 +141,7 @@ Congratulations! Now let's modify our controller to return the users in the data
 We will be using a MySql database, so let's edit the `./db/db.lua` file with our settings.
 
 ```lua
-local sqldb = require 'zebra.db.sql'
+local sqldb = require 'gin.db.sql'
 
 local DbSettings = {
 
@@ -176,7 +176,7 @@ local DbSettings = {
     }
 }
 
-MYSQLDB = sqldb.new(DbSettings[Zebra.env])
+MYSQLDB = sqldb.new(DbSettings[Gin.env])
 ```
 
 We have now defined a `MYSQLDB` connection to our MySql database, that is accessible throughout our application.
@@ -186,7 +186,7 @@ We have now defined a `MYSQLDB` connection to our MySql database, that is access
 Let's go ahead and generate a new migration:
 
 ```bash
-$ zebra generate migration
+$ gin generate migration
 Created new migration file
   db/migrations/20131109190242.lua
 ```
@@ -221,7 +221,7 @@ return SqlMigration
 Let's now apply the migration in the `test` environment:
 
 ```bash
-$ ZEBRA_ENV=test zebra migrate
+$ GIN_ENV=test gin migrate
 Migrating up in test environment
 Database 'demo_test' does not exist, created.
 ==> Successfully applied migration: 20131109190242
@@ -239,7 +239,7 @@ Users = MYSQLDB:define('users')
 ```
 This defines a model `Users` that corresponds to the database table `users`, for the database connection `MYSQLDB`.
 
-> By convention, models in Zebra have plural names.
+> By convention, models in Gin have plural names.
 
 ###### Modify Users' controller test
 Let's now modify the Users' controller test to return users. Edit the file `./spec/controllers/1/users_controller.lua` to add some fixture users in our database:
@@ -262,7 +262,7 @@ describe("UsersController", function()
 
     describe("#index", function()
         before_each(function()
-            roberto = Users.create({first_name = 'roberto', last_name = 'zebra'})
+            roberto = Users.create({first_name = 'roberto', last_name = 'gin'})
             hedy = Users.create({first_name = 'hedy', last_name = 'stripes'})
         end)
 
@@ -309,7 +309,7 @@ shows the list of users ordered by first name
 Expected:
 (table): {
   [2] = {
-    [last_name] = 'zebra'
+    [last_name] = 'gin'
     [first_name] = 'roberto'
     [id] = 1 }
   [1] = {
@@ -347,25 +347,25 @@ Great! Now what about smoke testing our application in a browser?
 Ensure migrations are run in the `development` environment:
 
 ```bash
-$ zebra migrate
+$ gin migrate
 Migrating up in development environment
 Database 'demo_development' does not exist, created.
 ==> Successfully applied migration: 20131109190242
 ```
 
-Now let's create some fake users in the `development` database, from the Zebra console:
+Now let's create some fake users in the `development` database, from the Gin console:
 
 ```bash
-$ zebra console
-Loading development environment (Zebra v0.0.1)
+$ gin console
+Loading development environment (Gin v0.0.1)
 Lua 5.1.5  Copyright (C) 1994-2012 Lua.org, PUC-Rio
-> Users.create({first_name = 'roberto', last_name = 'zebra'})
+> Users.create({first_name = 'roberto', last_name = 'gin'})
 > Users.create({first_name = 'hedy', last_name = 'stripes'})
 > pp(Users.all())
 {
   {
     first_name = "roberto",
-    last_name = "zebra",
+    last_name = "gin",
     id = "1"
   },
   {
@@ -381,11 +381,11 @@ As we can see from the `pp` command (aka 'pretty print') issued in the console, 
 Let's start a server in the `development` environment:
 
 ```bash
-$ zebra start
-Zebra app in development was succesfully started on port 7200.
+$ gin start
+Gin app in development was succesfully started on port 7200.
 ```
 
-Open up a browser and point it to the [API Console](/docs/api_console.html) at the address [http://localhost:7200/zebraconsole](http://localhost:7200/zebraconsole).
+Open up a browser and point it to the [API Console](/docs/api_console.html) at the address [http://localhost:7200/ginconsole](http://localhost:7200/ginconsole).
 
 Input `http://localhost:7200/users` in the API Console URL bar, and click on the `HIT` button. You should see the response body from your server:
 
@@ -397,7 +397,7 @@ Input `http://localhost:7200/users` in the API Console URL bar, and click on the
     "id": 2
   },
   {
-    "last_name": "zebra",
+    "last_name": "gin",
     "first_name": "roberto",
     "id": 1
   }
@@ -436,7 +436,7 @@ describe("UsersController", function()
             local response = hit({
                 method = 'POST',
                 path = "/users",
-                body = { first_name = 'new-user', last_name = 'zebra' }
+                body = { first_name = 'new-user', last_name = 'gin' }
             })
 
             local new_user = Users.find_by({ first_name = 'new-user' })

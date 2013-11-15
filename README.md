@@ -1,2 +1,2 @@
-# ZEBRA.IO
-The documentation files for the website [zebra.io](http://zebra.io).
+# GIN.IO
+The documentation files for the website [gin.io](http://gin.io).

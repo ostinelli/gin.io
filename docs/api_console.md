@@ -1,14 +1,14 @@
 ---
 layout: docs
-title: ZEBRA.IO | API Console
+title: GIN.IO | API Console
 ---
 
 
 # API Console
 
-Zebra comes with a handy tool to allow developers play around with their own API. This tool basically:
+Gin comes with a handy tool to allow developers play around with their own API. This tool basically:
 
- * takes care of adding the proper `Accept` header, used by Zebra to version the API
+ * takes care of adding the proper `Accept` header, used by Gin to version the API
  * allows a developer to set various HTTP methods for a request
  * allows a developer to specify request headers and its body
 

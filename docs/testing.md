@@ -1,18 +1,18 @@
 ---
 layout: docs
-title: ZEBRA.IO | Testing
+title: GIN.IO | Testing
 ---
 
 
 # Testing
-Testing is supported out of the box in Zebra. The main testing framework is [Busted](http://olivinelabs.com/busted/), which has an [RSpec](http://rspec.info/)-like syntax. If you ever used [Jasmine](http://pivotal.github.io/jasmine/) you'll feel right at home.
+Testing is supported out of the box in Gin. The main testing framework is [Busted](http://olivinelabs.com/busted/), which has an [RSpec](http://rspec.info/)-like syntax. If you ever used [Jasmine](http://pivotal.github.io/jasmine/) you'll feel right at home.
 
-In addition, Zebra provides test helpers for you to use.
+In addition, Gin provides test helpers for you to use.
 
 #### Controllers
-Controller Tests in Zebra are actually integration tests. An instance of OpenResty nginx will be started and a real request will be issued to a test server.
+Controller Tests in Gin are actually integration tests. An instance of OpenResty nginx will be started and a real request will be issued to a test server.
 
-The main Zebra test helper you'll need to use is the function `hit`, that will perform the integration test for you.
+The main Gin test helper you'll need to use is the function `hit`, that will perform the integration test for you.
 
 Here's an example of a controller test (file located in `./spec/controllers/1/info_controller_spec.lua`):
 
@@ -28,7 +28,7 @@ describe("InfoController", function()
             })
 
             assert.are.same(200, response.status)
-            assert.are.same({ name = "zebra" }, response.body)
+            assert.are.same({ name = "gin" }, response.body)
         end)
     end)
 end)
@@ -53,7 +53,7 @@ The `hit` helper returns a response object, that has the following attributes:
 
 
 #### Models
-There aren't specific Zebra test helpers for models. Please refer to the [tutorial](/tutorial.html) for examples on how to test your models.
+There aren't specific Gin test helpers for models. Please refer to the [tutorial](/tutorial.html) for examples on how to test your models.
 
 
 #### Test database fixtures

@@ -1,6 +1,6 @@
 ---
 layout: docs
-title: ZEBRA.IO | Errors
+title: GIN.IO | Errors
 ---
 
 
@@ -39,12 +39,12 @@ As per this example, this will return a HTTP status `400`, with the specified he
 }
 ```
 
-> Your application's error numbers must be greater than `1000`. All errors numbers from `0` to `999` are reserved for Zebra.
+> Your application's error numbers must be greater than `1000`. All errors numbers from `0` to `999` are reserved for Gin.
 
-##### Zebra error responses
+##### Gin error responses
 
 
-If no `Accept` header is provided by a client, Zebra will respond with a `412` HTTP status and a JSON body specifying the following error:
+If no `Accept` header is provided by a client, Gin will respond with a `412` HTTP status and a JSON body specifying the following error:
 
 ```javascript
 {
@@ -53,7 +53,7 @@ If no `Accept` header is provided by a client, Zebra will respond with a `412` H
 }
 ```
 
-If an invalid `Accept` header is provided by a client, Zebra will respond with a `412` HTTP status and a JSON body specifying the following error:
+If an invalid `Accept` header is provided by a client, Gin will respond with a `412` HTTP status and a JSON body specifying the following error:
 
 ```javascript
 {
@@ -62,7 +62,7 @@ If an invalid `Accept` header is provided by a client, Zebra will respond with a
 }
 ```
 
-If the API version specified by the client is not supported by your application, Zebra will respond with a `412` HTTP status and a JSON body specifying the following error:
+If the API version specified by the client is not supported by your application, Gin will respond with a `412` HTTP status and a JSON body specifying the following error:
 
 ```javascript
 {
@@ -71,7 +71,7 @@ If the API version specified by the client is not supported by your application,
 }
 ```
 
-If the JSON body provided in a request is invalid, Zebra will respond with a `400` HTTP status and a JSON body specifying the following error:
+If the JSON body provided in a request is invalid, Gin will respond with a `400` HTTP status and a JSON body specifying the following error:
 
 ```javascript
 {
@@ -80,7 +80,7 @@ If the JSON body provided in a request is invalid, Zebra will respond with a `40
 }
 ```
 
-If the JSON body provided in a request is not a JSON hash, Zebra will respond with a `400` HTTP status and a JSON body specifying the following error:
+If the JSON body provided in a request is not a JSON hash, Gin will respond with a `400` HTTP status and a JSON body specifying the following error:
 
 ```javascript
 {

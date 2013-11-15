@@ -1,13 +1,13 @@
 ---
 layout: docs
-title: ZEBRA.IO | Install
+title: GIN.IO | Install
 ---
 
 
 # Install
 
 ### On OSX
-These instructions allow you to install Zebra on a OSX developer machine.
+These instructions allow you to install Gin on a OSX developer machine.
 
 ##### Homebrew
 The instructions here below describe the installation flow using [HomeBrew](http://brew.sh/).
@@ -18,7 +18,7 @@ $ ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
 ```
 
 ##### OpenResty
-Zebra runs on [OpenResty](http://openresty.org/), a customized bundle of [Nginx](http://nginx.org/).
+Gin runs on [OpenResty](http://openresty.org/), a customized bundle of [Nginx](http://nginx.org/).
 
  * Install Perl Compatible Regular Expressions & LuaJIT
 
@@ -104,19 +104,19 @@ If you're planning to use MySql, you'll need to have an installed MySql copy tog
     ```
 
 
-##### Zebra
-To install Zebra, issue the commands:
+##### Gin
+To install Gin, issue the commands:
 
 ```bash
-$ git clone git@github.com:ostinelli/zebra.git
-$ cd zebra
+$ git clone git@github.com:ostinelli/gin.git
+$ cd gin
 $ luarocks make
 ```
 
-Check if the Zebra client got correctly installed:
+Check if the Gin client got correctly installed:
 
 ```bash
-$ zebra
+$ gin
 
                  ```-`.
              -.-/++.:sdo+.-+:
@@ -144,21 +144,21 @@ $ zebra
     `::://syy+.s  o`  `:+hNNs-
           .::::    -/shhs+-
 
-ZEBRA v0.0.1, a JSON-API web framework.
+GIN v0.0.1, a JSON-API web framework.
 
-Usage: zebra COMMAND [ARGS]
+Usage: gin COMMAND [ARGS]
 
-The available zebra commands are:
- new [name]             Create a new Zebra application
- start                  Starts the Zebra server
- stop                   Stops the Zebra server
+The available gin commands are:
+ new [name]             Create a new Gin application
+ start                  Starts the Gin server
+ stop                   Stops the Gin server
  generate migration     Create a new SQL migration
  migrate                Run all SQL migrations that have not been run
  migrate rollback       Rollback one SQL migration
- console                Start a Zebra console
+ console                Start a Gin console
 
 ```
 
-If you can see this, consider your installation of Zebra a success!
+If you can see this, consider your installation of Gin a success!
 
-You can now proceed to [Getting Started](/docs/getting_started.html) to create your first Zebra app.
+You can now proceed to [Getting Started](/docs/getting_started.html) to create your first Gin app.

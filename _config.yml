@@ -1,9 +1,9 @@
 # jekyll serve -w
 
-name: ZEBRA.IO
+name: GIN.IO
 description: "A fast, low-latency, low-memory footprint, web JSON-API framework."
 
-url: http://zebra.io
+url: http://gin.io
 
 markdown: redcarpet
 pygments: true

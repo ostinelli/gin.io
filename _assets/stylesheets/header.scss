@@ -6,7 +6,7 @@
   z-index: 999;
   height: $header_height;
 
-  background: $nav_background url(asset_path('zebra-bg-blue.jpg')) repeat;
+  background: $nav_background;
   color: $white;
 
   a {

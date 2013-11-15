@@ -1,16 +1,16 @@
 ---
 layout: docs
-title: ZEBRA.IO | Other
+title: GIN.IO | Other
 ---
 
 # Other
 
-##### The Zebra object
-In your application, `Zebra` exposes some attributes you might need.
+##### The Gin object
+In your application, `Gin` exposes some attributes you might need.
 
- * `Zebra.env`: returns the current environment (`development`, `test`, `production`, or any other environment you may be running Zebra in)
- * `Zebra.version`: returns the current Zebra version
- * `Zebra.settings`: returns the global settings defined per environment in `./config/settings.lua` (see [Application files](/docs/application_files.html), under `settings.lua`)
+ * `Gin.env`: returns the current environment (`development`, `test`, `production`, or any other environment you may be running Gin in)
+ * `Gin.version`: returns the current Gin version
+ * `Gin.settings`: returns the global settings defined per environment in `./config/settings.lua` (see [Application files](/docs/application_files.html), under `settings.lua`)
 
 
 ##### JSON
@@ -23,20 +23,20 @@ JSON exposes the [CJSON](http://www.kyne.com.au/~mark/software/lua-cjson.php) cl
 
 
 ##### Running in environments
-To run Zebra in an environment different than `development` (the default), ensure this environment has been defined where appropriate (at least in `./config/settings.lua`) and run:
+To run Gin in an environment different than `development` (the default), ensure this environment has been defined where appropriate (at least in `./config/settings.lua`) and run:
 
 ```bash
-$ ZEBRA_ENV={environment} zebra start
+$ GIN_ENV={environment} gin start
 ```
 
-For instance, to run Zebra in production:
+For instance, to run Gin in production:
 
 ```bash
-$ ZEBRA_ENV=production zebra start
+$ GIN_ENV=production gin start
 ```
 
 To stop:
 
 ```bash
-$ ZEBRA_ENV={environment} zebra stop
+$ GIN_ENV={environment} gin stop
 ```
