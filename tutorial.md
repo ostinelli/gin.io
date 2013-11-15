@@ -407,8 +407,11 @@ Input `http://localhost:7200/users` in the API Console URL bar, and click on the
 ### Users create
 Let's now implement the Users' `create` API call.
 
+> For readability concerns, code related to the `index` action described in the previous section is partially omitted.
+
 ###### Add controller's test
 Edit your controller test to add the tests for the `create` action.
+
 
 ```lua
 require 'spec.spec_helper'
@@ -426,31 +429,7 @@ describe("UsersController", function()
         clean_db()
     end)
 
-    describe("#index", function()
-        before_each(function()
-            roberto = Users.create({first_name = 'roberto', last_name = 'zebra'})
-            hedy = Users.create({first_name = 'hedy', last_name = 'stripes'})
-        end)
-
-        after_each(function()
-            roberto = nil
-            hedy = nil
-        end)
-
-        it("shows the list of users ordered by first name", function()
-            local response = hit({
-                method = 'GET',
-                path = "/users"
-            })
-
-            assert.are.same(200, response.status)
-
-            assert.are.same({
-                [1] = hedy,
-                [2] = roberto
-            }, response.body)
-        end)
-    end)
+    [...]
 
     describe("#create", function()
         it("adds a new user", function()
@@ -462,10 +441,6 @@ describe("UsersController", function()
 
             local new_user = Users.find_by({ first_name = 'new-user' })
             assert.are_not.equals(nil, new_user)
-
-            -- luasql is the mysql driver used outside of nginx, and it does not convert database types.
-            -- ensure that ID is converted to a numeric type
-            new_user.id = tonumber(new_user.id)
 
             assert.are.same(201, response.status)
             assert.are.same(new_user, response.body)
@@ -482,16 +457,16 @@ $ busted spec/controllers/1/users_controller_spec.lua
 ●●
 1 success / 1 failure / 0 pending : 0.125744 seconds.
 
-Failure → ./spec/controllers/1/users_controller_spec.lua @ 43
+Failure → ./spec/controllers/1/users_controller_spec.lua @ 51
 adds a new user
 ./spec/controllers/1/users_controller_spec.lua:51: Expected objects to not be equal. Passed in:
 (nil)
 Did not expect:
 (nil)
 ```
-The passed test is obviously the one related to the `index` action.
+The passing test is obviously the one related to the `index` action.
 
-Let's create the route for the `create` action, by editing the `./config/routes.lua` file:
+Create the route for the `create` action, by editing the `./config/routes.lua` file:
 
 ```lua
 -- define version
@@ -502,15 +477,12 @@ v1:GET("/users", { controller = "users", action = "index" })
 v1:POST("/users", { controller = "users", action = "create" })
 ```
 
-Let's edit the Users' controller in `./app/controllers/1/users_controller.lua` to add the create action:
+Edit the Users' controller in `./app/controllers/1/users_controller.lua` to add the create action:
 
 ```lua
 local UsersController = {}
 
-function UsersController:index()
-    local users = Users.all({ order = "first_name" })
-    return 200, users
-end
+[...]
 
 function UsersController:create()
     local new_user = Users.create(self.request.body)
@@ -529,5 +501,16 @@ $ busted spec/controllers/1/users_controller_spec.lua
 2 successes / 0 failures / 0 pending : 0.133 seconds.
 ```
 
-This is nice, however we're currently not filtering out the params that we are allowing external callers to set in our models, nor we are doing any kind of model validation.
+We are now able to allow for user creation.
 
+###### Add params filtering
+We're currently not filtering out the params that we are allowing external callers to set in our models. In this example, for instance, we do not want an external caller to be able to set the `id` they want on new users.
+
+Add the test:
+
+
+
+
+
+
+###### Validations
