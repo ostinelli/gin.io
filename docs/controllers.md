@@ -157,3 +157,25 @@ end
 
 return InfoController
 ```
+
+##### The Accepted Params helper
+
+The controller exposes the method `accepted_params` that allows you to filter out any unwanted keys from the requested params in the body.
+
+This allows you to filter out:
+
+ * Non-existent params in a database table
+ * Params that you do not want to expose to the caller.
+
+For instance:
+
+```lua
+local params = self:accepted_params({ 'first_name', 'last_name' }, self.request.body)
+```
+
+The variable `params` will only contains the keys `first_name`, `last_name` from the request body.
+
+
+
+
+

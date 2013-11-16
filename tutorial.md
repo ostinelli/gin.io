@@ -11,6 +11,8 @@ This tutorial showcases the use of [Test-Driven Development](http://en.wikipedia
 
 > For the purpose of this tutorial we have omitted API authentication. We also assume that you have Gin and MySql properly installed. If not, follow the [install instructions](/docs/install.html) before proceeding.
 
+The code of this tutorial can be found in the Github repo [gin-demo](https://github.com/ostinelli/gin-demo).
+
 
 ###### Create application
 Let's create an application called `demo`:
@@ -63,10 +65,11 @@ $ rm spec/controllers/1/pages_controller_spec.lua
 Let's start by implementing a Users' `index` API call.
 
 ###### Create the Users' controller test file
-Create the file `./spec/controllers/1/users_controller.lua`, and let's write the first test:
+Create the file `./spec/controllers/1/users_controller_spec.lua`, and let's write the first test:
 
 ```lua
 require 'spec.spec_helper'
+
 
 describe("UsersController", function()
     describe("#index", function()
@@ -76,7 +79,7 @@ describe("UsersController", function()
                 path = "/users"
             })
 
-            assert.are.same(200, response.status)
+            assert.are.equal(200, response.status)
             assert.are.same({}, response.body)
         end)
     end)
@@ -89,11 +92,11 @@ As a start, we just want our Users' controller to return a successful response w
 $ busted spec/controllers/1/users_controller_spec.lua
 
 ●
-0 successes / 1 failure / 0 pending : 0.025699 seconds.
+0 successes / 1 failure / 0 pending : 0.024976 seconds.
 
-Failure → ./spec/controllers/1/users_controller_spec.lua @ 5
-shows the list of users
-./spec/controllers/1/users_controller_spec.lua:11: Expected objects to be the same. Passed in:
+Failure → ./spec/controllers/1/users_controllers_spec.lua @ 6
+UsersController / #index / shows the list of users
+./spec/controllers/1/users_controllers_spec.lua:12: Expected objects to be the same. Passed in:
 (number) 404
 Expected:
 (number) 200
@@ -106,11 +109,15 @@ That is to be expected, as we obviously still do not have created the users' con
 Edit the file `./config/routes.lua`. Let's create a version `1` namespace, and the route to `/users`.
 
 ```lua
+local routes = require 'gin.core.routes'
+
 -- define version
-local v1 = Routes.version(1)
+local v1 = routes.version(1)
 
 -- define routes
 v1:GET("/users", { controller = "users", action = "index" })
+
+return routes
 ```
 
 ###### Create Users' controller
@@ -139,13 +146,14 @@ $ busted spec/controllers/1/users_controller_spec.lua
 Congratulations! Now let's modify our controller to return the users in the database.
 
 ###### Setup Database
-We will be using a MySql database, so let's edit the `./db/db.lua` file with our settings.
+We will be using a MySql database, so let's edit the `./db/mysql.lua` file with our settings.
 
 ```lua
-local sqldb = require 'gin.db.sql'
+local SqlDatabase = require 'gin.db.sql'
+local Gin = require 'gin.core.gin'
 
+-- First, specify the environment settings for this database, for instance:
 local DbSettings = {
-
     development = {
         adapter = 'mysql',
         host = "127.0.0.1",
@@ -177,46 +185,54 @@ local DbSettings = {
     }
 }
 
-MYSQLDB = sqldb.new(DbSettings[Gin.env])
+-- Then initialize and return your database:
+local MySql = SqlDatabase.new(DbSettings[Gin.env])
+
+return MySql
 ```
 
-We have now defined a `MYSQLDB` connection to our MySql database, that is accessible throughout our application.
+We have now defined a connection to our MySql database.
 
 ###### Create a Users' table
 
-Let's go ahead and generate a new migration:
+Let's go ahead and generate a new migration for the newly created `MySql` connection:
 
 ```bash
 $ gin generate migration
 Created new migration file
-  db/migrations/20131109190242.lua
+  db/migrations/20131116131423.lua
 ```
 
-Edit the file `./db/migrations/20131109190242.lua` to create a database in the `up()` method (called when the migration is run), and destroy it in the `down()` method (when the migration is rolled back), like this:
+Edit the file `./db/migrations/20131116131423.lua` to create the `users` table in the `up()` method (called when the migration is run), and destroy it in the `down()` method (when the migration is rolled back), like this:
 
 ```lua
 local SqlMigration = {}
 
-SqlMigration.db = MYSQLDB
+-- specify the database used in this migration (needed by the Gin migration engine)
+SqlMigration.db = require 'db.mysql'
 
 function SqlMigration.up()
+    -- Run your migration
     SqlMigration.db:execute([[
         CREATE TABLE users (
             id int NOT NULL AUTO_INCREMENT,
             first_name varchar(255) NOT NULL,
             last_name varchar(255),
-            PRIMARY KEY (id)
+            PRIMARY KEY (id),
+            UNIQUE (first_name)
         );
     ]])
 end
 
 function SqlMigration.down()
+    -- Run your rollback
     SqlMigration.db:execute([[
         DROP TABLE users;
     ]])
 end
 
 return SqlMigration
+
 ```
 
 Let's now apply the migration in the `test` environment:
@@ -224,8 +240,7 @@ Let's now apply the migration in the `test` environment:
 ```bash
 $ GIN_ENV=test gin migrate
 Migrating up in test environment
-Database 'demo_test' does not exist, created.
-==> Successfully applied migration: 20131109190242
+==> Successfully applied migration: 20131116131423
 ```
 
 > The migration engine has created the database `demo_test` for us.
@@ -236,21 +251,30 @@ Database 'demo_test' does not exist, created.
 In order to return users, we first need to create a `Users` model. Go ahead and create the file `./app/models/users.lua`, with this content:
 
 ```lua
-Users = MYSQLDB:define('users')
+-- gin
+local MySql = require 'db.mysql'
+local SqlOrm = require 'gin.db.sql.orm'
+
+-- define
+return SqlOrm.define_model(MySql, 'users')
 ```
-This defines a model `Users` that corresponds to the database table `users`, for the database connection `MYSQLDB`.
+This defines a model `Users` that corresponds to the database table `users`, for the database connection `MySql`.
 
 > By convention, models in Gin have plural names.
 
 ###### Modify Users' controller test
-Let's now modify the Users' controller test to return users. Edit the file `./spec/controllers/1/users_controller.lua` to add some fixture users in our database:
+Let's now modify the Users' controller test to return users. Edit the file `./spec/controllers/1/users_controller_spec.lua` to add some fixture users in our database:
 
 ```lua
 require 'spec.spec_helper'
 
+local MySql = require 'db.mysql'
+local Users = require 'app.models.users'
+
 local function clean_db()
-    MYSQLDB:execute("TRUNCATE TABLE users;")
+    MySql:execute("TRUNCATE TABLE users;")
 end
+
 
 describe("UsersController", function()
     before_each(function()
@@ -264,7 +288,7 @@ describe("UsersController", function()
     describe("#index", function()
         before_each(function()
             roberto = Users.create({first_name = 'roberto', last_name = 'gin'})
-            hedy = Users.create({first_name = 'hedy', last_name = 'stripes'})
+            hedy = Users.create({first_name = 'hedy', last_name = 'tonic'})
         end)
 
         after_each(function()
@@ -278,7 +302,7 @@ describe("UsersController", function()
                 path = "/users"
             })
 
-            assert.are.same(200, response.status)
+            assert.are.equal(200, response.status)
 
             assert.are.same({
                 [1] = hedy,
@@ -291,21 +315,21 @@ end)
 
 Please note that in Lua, arrays start with index `1`, hence the expectations above.
 
-> Remember to clean up after your tests, this is what the `MYSQLDB:execute("TRUNCATE TABLE users;")` call in `clean_db()` is for. We are calling `clean_db()` before and after all tests, to ensure that the database has a clean start even in the case that previous tests were run improperly or aborted for any reason.
+> Remember to clean up after your tests, this is what the `MySql:execute("TRUNCATE TABLE users;")` call in `clean_db()` is for. We are calling `clean_db()` before and after all tests, to ensure that the database has a clean start even in the case that previous tests were run improperly or aborted for any reason.
 
 > Also, don't forget to reset any global variables, like `roberto` and `hedy` in the example here above.
 
 Let's run the controller tests:
 
 ```bash
-$ busted spec/controllers/1/users_controller_spec.lua
+$ busted spec/controllers/1/users_controllers_spec.lua
 
 ●
-0 successes / 1 failure / 0 pending : 0.065522 seconds.
+0 successes / 1 failure / 0 pending : 0.072839 seconds.
 
-Failure → ./spec/controllers/1/users_controller_spec.lua @ 16
-shows the list of users ordered by first name
-./spec/controllers/1/users_controller_spec.lua:24: Expected objects to be the same. Passed in:
+Failure → ./spec/controllers/1/users_controllers_spec.lua @ 31
+UsersController / #index / shows the list of users ordered by first name
+./spec/controllers/1/users_controllers_spec.lua:39: Expected objects to be the same. Passed in:
 (table): { }
 Expected:
 (table): {
@@ -314,7 +338,7 @@ Expected:
     [first_name] = 'roberto'
     [id] = 1 }
   [1] = {
-    [last_name] = 'stripes'
+    [last_name] = 'tonic'
     [first_name] = 'hedy'
     [id] = 2 } }
 ```
@@ -325,20 +349,24 @@ Let's go ahead and edit the controller:
 local UsersController = {}
 
 function UsersController:index()
+    local Users = require 'app.models.users'
     local users = Users.all({ order = "first_name" })
+
     return 200, users
 end
 
 return UsersController
 ```
 
+> For optimization reasons, ensure that you require the `Users` model in the controller action itself, not at module level.
+
 If we run our tests now:
 
 ```bash
-$ busted spec/controllers/1/users_controller_spec.lua
+$ busted spec/controllers/1/users_controllers_spec.lua
 
 ●
-1 success / 0 failures / 0 pending : 0.06695 seconds.
+1 success / 0 failures / 0 pending : 0.073925 seconds.
 ```
 
 Great! Now what about smoke testing our application in a browser?
@@ -350,31 +378,32 @@ Ensure migrations are run in the `development` environment:
 ```bash
 $ gin migrate
 Migrating up in development environment
-Database 'demo_development' does not exist, created.
-==> Successfully applied migration: 20131109190242
+==> Successfully applied migration: 20131116131423
 ```
 
 Now let's create some fake users in the `development` database, from the Gin console:
 
 ```bash
 $ gin console
-Loading development environment (Gin v0.0.1)
+Loading development environment (Gin v0.1)
 Lua 5.1.5  Copyright (C) 1994-2012 Lua.org, PUC-Rio
+> Users = require 'app.models.users'
 > Users.create({first_name = 'roberto', last_name = 'gin'})
-> Users.create({first_name = 'hedy', last_name = 'stripes'})
+> Users.create({first_name = 'hedy', last_name = 'tonic'})
 > pp(Users.all())
 {
   {
     first_name = "roberto",
     last_name = "gin",
-    id = "1"
+    id = 1
   },
   {
     first_name = "hedy",
-    last_name = "stripes",
-    id = "2"
+    last_name = "tonic",
+    id = 2
   }
 }
+
 ```
 
 As we can see from the `pp` command (aka 'pretty print') issued in the console, our users have successfully been created in the `development` database. Quit the console with `CTRL-C`.
@@ -393,7 +422,7 @@ Input `http://localhost:7200/users` in the API Console URL bar, and click on the
 ```javascript
 [
   {
-    "last_name": "stripes",
+    "last_name": "tonic",
     "first_name": "hedy",
     "id": 2
   },
@@ -417,9 +446,13 @@ Edit your controller test to add the tests for the `create` action.
 ```lua
 require 'spec.spec_helper'
 
+local MySql = require 'db.mysql'
+local Users = require 'app.models.users'
+
 local function clean_db()
-    MYSQLDB:execute("TRUNCATE TABLE users;")
+    MySql:execute("TRUNCATE TABLE users;")
 end
+
 
 describe("UsersController", function()
     before_each(function()
@@ -443,7 +476,7 @@ describe("UsersController", function()
             local new_user = Users.find_by({ first_name = 'new-user' })
             assert.are_not.equals(nil, new_user)
 
-            assert.are.same(201, response.status)
+            assert.are.equal(201, response.status)
             assert.are.same(new_user, response.body)
         end)
     end)
@@ -453,29 +486,33 @@ end)
 Running the tests returns an error:
 
 ```bash
-$ busted spec/controllers/1/users_controller_spec.lua
+$ busted spec/controllers/1/users_controllers_spec.lua
 
 ●●
-1 success / 1 failure / 0 pending : 0.125744 seconds.
+1 success / 1 failure / 0 pending : 0.133645 seconds.
 
-Failure → ./spec/controllers/1/users_controller_spec.lua @ 51
-adds a new user
-./spec/controllers/1/users_controller_spec.lua:51: Expected objects to not be equal. Passed in:
-(nil)
-Did not expect:
-(nil)
+Failure → ./spec/controllers/1/users_controllers_spec.lua @ 47
+UsersController / #create / adds a new user
+./spec/controllers/1/users_controllers_spec.lua:57: Expected objects to be the same. Passed in:
+(number) 404
+Expected:
+(number) 201
 ```
 The passing test is obviously the one related to the `index` action.
 
 Create the route for the `create` action, by editing the `./config/routes.lua` file:
 
 ```lua
+local routes = require 'gin.core.routes'
+
 -- define version
-local v1 = Routes.version(1)
+local v1 = routes.version(1)
 
 -- define routes
 v1:GET("/users", { controller = "users", action = "index" })
 v1:POST("/users", { controller = "users", action = "create" })
+
+return routes
 ```
 
 Edit the Users' controller in `./app/controllers/1/users_controller.lua` to add the create action:
@@ -486,7 +523,9 @@ local UsersController = {}
 [...]
 
 function UsersController:create()
+    local Users = require 'app.models.users'
     local new_user = Users.create(self.request.body)
+
     return 201, new_user
 end
 
@@ -496,22 +535,319 @@ return UsersController
 Let's run the tests again:
 
 ```bash
-$ busted spec/controllers/1/users_controller_spec.lua
+$ busted spec/controllers/1/users_controllers_spec.lua
 
 ●●
-2 successes / 0 failures / 0 pending : 0.133 seconds.
+2 successes / 0 failures / 0 pending : 0.166405 seconds.
 ```
 
 We are now able to allow for user creation.
 
-###### Add params filtering
-We're currently not filtering out the params that we are allowing external callers to set in our models. In this example, for instance, we do not want an external caller to be able to set the `id` they want on new users.
+###### Accepted params
+We're currently not filtering out the params that we are allowing external callers to set in our models. In this example, for instance, we do not want an external caller to be able to set the `id` they want on new users, nor to make our server raise an error due to non-existent params being passed in.
 
 Add the test:
 
+```lua
+require 'spec.spec_helper'
+
+local MySql = require 'db.mysql'
+local Users = require 'app.models.users'
+
+local function clean_db()
+    MySql:execute("TRUNCATE TABLE users;")
+end
 
 
+describe("UsersController", function()
+    before_each(function()
+        clean_db()
+    end)
+
+    after_each(function()
+        clean_db()
+    end)
+
+    [...]
+
+    describe("#create", function()
+        it("adds a new user filtering out unaccepted params", function()
+            local request_new_user = {
+                first_name = 'new-user',
+                last_name = 'gin',
+                id = 400,
+                nonexisent_param = 'non-existent'
+            }
+
+            local response = hit({
+                method = 'POST',
+                path = "/users",
+                body = request_new_user
+            })
+
+            local new_user = Users.find_by({ first_name = 'new-user' })
+            assert.are_not.equals(nil, new_user)
+
+            assert.are.equal(201, response.status)
+
+            assert.are.same('new-user', new_user.first_name)
+            assert.are.same('gin', new_user.last_name)
+            assert.are.not_equals(400, new_user.id)
+            assert.are.not_equals('non-existent', new_user.nonexisent_param)
+        end)
+    end)
+end)
+```
+
+Run the tests:
+
+```bash
+$ busted spec/controllers/1/users_controllers_spec.lua
+
+●●
+1 success / 1 failure / 0 pending : 0.138575 seconds.
+
+Failure → ./spec/controllers/1/users_controllers_spec.lua @ 47
+UsersController / #create / adds a new user filtering out unaccepted params
+./spec/controllers/1/users_controllers_spec.lua:62: Expected objects to not be equal. Passed in:
+(nil)
+Did not expect:
+(nil)
+```
+
+We can see that the user did not get created. If we open up the test logs (file `logs/test-error.log`), we see:
+
+```
+2013/11/16 14:09:28 [error] 11545#0: *1 lua entry thread aborted: runtime error: /usr/local/share/lua/5.1/gin/core/router.lua:145: /usr/local/share/lua/5.1/gin/db/sql/mysql/adapter.lua:94: bad mysql result: Unknown column 'nonexisent_param' in 'field list': 1054 42S22
+stack traceback:
+coroutine 0:
+    [C]: in function 'error'
+    /usr/local/share/lua/5.1/gin/core/router.lua:145: in function 'call_controller'
+    /usr/local/share/lua/5.1/gin/core/router.lua:74: in function 'handler'
+    [string "content_by_lua"]:1: in function <[string "content_by_lua"]:1>, client: 127.0.0.1, server: , request: "POST /users? HTTP/1.1", host: "127.0.0.1"
+```
+
+This explains why our user did not get created, since there's an `Unknown column 'nonexisent_param' in 'field list'`.
+
+Let's implement the filter with the controller's `accepted_params` method:
+
+```lua
+local UsersController = {}
+
+[...]
+
+function UsersController:create()
+    local Users = require 'app.models.users'
+
+    local params = self:accepted_params({ 'first_name', 'last_name' }, self.request.body)
+    local new_user = Users.create(params)
+
+    return 201, new_user
+end
+
+return UsersController
+```
+
+Our tests are now successful:
+
+```bash
+$ busted spec/controllers/1/users_controllers_spec.lua
+
+●●
+2 successes / 0 failures / 0 pending : 0.138814 seconds.
+```
 
 
+### User Show
+Let's finishe this tutorial by using a named route which implements the Users' `show` API call.
 
-###### Validations
+> For readability concerns, code related to the `index` and `create` actions described in the previous sections is partially omitted.
+
+Add the test for the `show` method:
+
+```lua
+require 'spec.spec_helper'
+
+local MySql = require 'db.mysql'
+local Users = require 'app.models.users'
+
+local function clean_db()
+    MySql:execute("TRUNCATE TABLE users;")
+end
+
+
+describe("UsersController", function()
+    before_each(function()
+        clean_db()
+    end)
+
+    after_each(function()
+        clean_db()
+    end)
+
+    [...]
+
+    describe("#show", function()
+        before_each(function()
+            roberto = Users.create({first_name = 'roberto', last_name = 'gin'})
+        end)
+
+        after_each(function()
+            roberto = nil
+        end)
+
+        it("shows a user", function()
+            local response = hit({
+                method = 'GET',
+                path = "/users/roberto"
+            })
+
+            assert.are.equal(200, response.status)
+            assert.are.same(roberto, response.body)
+        end)
+    end)
+end)
+```
+
+> W consider `first_name` as being the friendly identifier for a user. This is why we have a uniqueness contraint at database level, defined in our migration here above.
+
+Test fails with a `404`:
+
+```bash
+$ busted spec/controllers/1/users_controllers_spec.lua
+
+●●●
+2 successes / 1 failure / 0 pending : 0.191136 seconds.
+
+Failure → ./spec/controllers/1/users_controllers_spec.lua @ 82
+UsersController / #show / shows a user
+./spec/controllers/1/users_controllers_spec.lua:88: Expected objects to be the same. Passed in:
+(number) 404
+Expected:
+(number) 200
+```
+
+Add the named route `:first_name` in `./config/routes.lua`:
+
+```lua
+local routes = require 'gin.core.routes'
+
+-- define version
+local v1 = routes.version(1)
+
+-- define routes
+v1:GET("/users", { controller = "users", action = "index" })
+v1:POST("/users", { controller = "users", action = "create" })
+v1:GET("/users/:first_name", { controller = "users", action = "show" })
+
+return routes
+```
+
+Implement the `show` code the controller:
+
+```lua
+local UsersController = {}
+
+[...]
+
+function UsersController:show()
+    local Users = require 'app.models.users'
+    local user = Users.find_by({ first_name = self.params.first_name })
+
+    return 200, user
+end
+
+return UsersController
+```
+
+Test now succeed:
+
+```bash
+$ busted spec/controllers/1/users_controllers_spec.lua
+
+●●●
+3 successes / 0 failures / 0 pending : 0.199211 seconds.
+```
+
+One last thing: we need to return a 404 if the user cannot be found. The test for the `show` action becomes:
+
+```lua
+require 'spec.spec_helper'
+
+local MySql = require 'db.mysql'
+local Users = require 'app.models.users'
+
+local function clean_db()
+    MySql:execute("TRUNCATE TABLE users;")
+end
+
+
+describe("UsersController", function()
+    before_each(function()
+        clean_db()
+    end)
+
+    after_each(function()
+        clean_db()
+    end)
+
+    [...]
+
+    describe("#show", function()
+        describe("when the user can be found", function()
+            before_each(function()
+                roberto = Users.create({first_name = 'roberto', last_name = 'gin'})
+            end)
+
+            after_each(function()
+                roberto = nil
+            end)
+
+            it("shows a user", function()
+                local response = hit({
+                    method = 'GET',
+                    path = "/users/roberto"
+                })
+
+                assert.are.equal(200, response.status)
+                assert.are.same(roberto, response.body)
+            end)
+        end)
+
+        describe("when the user cannot be found", function()
+            it("returns a 404", function()
+                local response = hit({
+                    method = 'GET',
+                    path = "/users/roberto"
+                })
+
+                assert.are.equal(404, response.status)
+                assert.are.same({}, response.body)
+            end)
+        end)
+    end)
+end)
+```
+
+And the controller implementation:
+
+```lua
+local UsersController = {}
+
+[...]
+
+function UsersController:show()
+    local Users = require 'app.models.users'
+    local user = Users.find_by({ first_name = self.params.first_name })
+
+    if user then
+        return 200, user
+    else
+        return 404
+    end
+end
+
+return UsersController
+```
+
+This concludes the tutorial. To see the complete code for this application, please checkout the Github repo [gin-demo](https://github.com/ostinelli/gin-demo).
