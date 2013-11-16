@@ -4,7 +4,7 @@ title: GIN.IO
 ---
 
 
-# GIN
+# GIN JSON-API framework
 
 Gin is an JSON-API framework, currently in its early stage.
 
