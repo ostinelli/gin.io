@@ -5,7 +5,7 @@ title: GIN.IO | Models
 
 # Models
 
-In Gin, you define all of your databases in the file `./db/db.lua`.
+In Gin, you define your databases in the directory `./db/`.
 
 These databases can then be accessed in the various model files located in `./app/models`, where you can implement helper methods to store and query data into and from these databases.
 
@@ -24,15 +24,14 @@ However, Gin does come with a more traditional database helper that allows you t
 
 ###### Define a DB and a model
 
-To create a MySQL model with ORM functionalities, we first need to define a new MySQL database in the file `./db/db.lua`, by requiring Gin's SQL helper and by specifying the `mysql` adapter like so:
+To create a MySQL model with ORM functionalities, we first need to define a new MySQL database in the file `./db/mysql.lua`, by requiring Gin's SQL helper and by specifying the `mysql` adapter like so:
 
 ```lua
-local sqldb = require 'gin.db.sql'
+local SqlDatabase = require 'gin.db.sql'
+local Gin = require 'gin.core.gin'
 
--- Here you can setup your databases that will be accessible throughout your application.
--- First, specify the settings (you may add multiple databases with this pattern), for instance:
+-- First, specify the environment settings for this database, for instance:
 local DbSettings = {
-
     development = {
         adapter = 'mysql',
         host = "127.0.0.1",
@@ -64,36 +63,39 @@ local DbSettings = {
     }
 }
 
--- Then initialize your database(s), for instance:
-MYSQLDB = sqldb.new(DbSettings[Gin.env])
+-- Then initialize and return your database:
+local MySql = SqlDatabase.new(DbSettings[Gin.env])
 
+return MySql
 ```
-
-In Lua, a variable that is not specifically set as `local` is defined globally. Hence, the database variable `MYSQLDB` defined here above is a global object available
-throughout your application.
-
 As you can see, we're defining various database access settings for the three environments `development`, `test` and `production`, and then initializing the
 database object with the settings that correspond to the enivornment Gin is run in (available in `Gin.env`).
 
-> The newly created object `MYSQLDB` mainly exposes two functions: `define` (see here below) and `execute(sql)`. The latter allows you to use the `MYSQLDB` connection anywhere in your application, including models,
-> to perform database queries, by calling `MYSQLDB:execute(sql)`.
+> The newly created object `MySql` mainly exposes the method `execute(sql)`. It allows you to use the `MySql` connection in your application to perform database queries, by calling `MySql:execute(sql)`.
 
 Now that we have a database object, we can define a model `Users`. To do so, create the file `./app/models/users.lua` and enter this code:
 
 ```lua
-Users = MYSQLDB:define('users')
+-- gin
+local MySql = require 'db.mysql'
+local SqlOrm = require 'gin.db.sql.orm'
+
+-- define
+return SqlOrm.define_model(MySql, 'users')
 ```
-This defines a model `Users` that corresponds to the database table `users`, for the database connection `MYSQLDB`.
+This defines a model `Users` that corresponds to the database table `users`, for the database connection `MySql`.
 
 > For the ORM to work properly, the table `users` must have an `AUTO_INCREMENT PRIMARY KEY` named `id`. Please refer to [migrations](/docs/migrations.html) for additional information.
 
 ###### Queries
 
-The `Users` model defined here above can now be used to perform standard SQL queries.
+The `Users` model defined here above can now be used to perform standard SQL queries, after you've required it:
 
+```lua
+local Users = require 'app.models.users'
+```
 
- * `Users.new(attrs)`: creates a new user with the passed in attributes. The attributes must correspond to the ones defined in the table `users`. The object is not saved to the database until `save` is called on it.
- This returns the newly created user object. For example:
+ * `Users.new(attrs)`: creates a new user with the passed in attributes. The object is not saved to the database until `save` is called on it. This returns the newly created user object. For example:
 
  ```lua
  local user = Users.new({ first_name = 'gin' })
@@ -149,11 +151,4 @@ The `Users` model defined here above can now be used to perform standard SQL que
  ```lua
  local user = Users.find_by({ first_name = 'gin' })
  user:delete()
- ```
-
- * `user:class()`: returns a model's instance's class. For example:
-
- ```lua
- local user = Users.create({ first_name = 'gin' })
- user:class() -- => Users
  ```

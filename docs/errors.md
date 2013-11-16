@@ -6,14 +6,16 @@ title: GIN.IO | Errors
 
 # Errors
 
-As part of your application's default initializers, a `./config/initializers/errors.lua` file has been generated for you.
+As part of your application's default initializers, a `./config/errors.lua` file has been generated for you.
 
 This is what a simple error file looks like:
 
 ```lua
-Errors = {
+local Errors = {
     [1000] = { status = 400, message = "Invalid request.", headers = { ["X-Header"] = "header" } },
 }
+
+return Errors
 ```
 
 The global variable `Errors` contains the entries for all possible errors of your application. Every item in this table defines

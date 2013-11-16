@@ -29,7 +29,7 @@ Gin runs on [OpenResty](http://openresty.org/), a customized bundle of [Nginx](h
 
  * Install OpenResty
 
-    Go to [OpenResty](http://openresty.org/) in the downloads section and grab the latest version number. Then:
+    Go to [OpenResty](http://openresty.org/#Download) in the downloads section and grab the latest Mainline release. Then:
 
     ```bash
     $ wget http://openresty.org/download/ngx_openresty-VERSION.tar.gz
@@ -55,7 +55,7 @@ Gin runs on [OpenResty](http://openresty.org/), a customized bundle of [Nginx](h
 
     ```bash
     $ nginx -v
-    nginx version: ngx_openresty/1.2.8.6
+    nginx version: ngx_openresty/1.4.3.3
     ```
 
 ##### Lua & Luarocks
@@ -67,7 +67,7 @@ $ brew install lua luarocks
 
 
 ##### MySql
-If you're planning to use MySql, you'll need to have an installed MySql copy together with its header files so that [LuaSql](http://www.keplerproject.org/luasql/) can be compiled.
+If you're planning to use MySql, you'll need to have an installed MySql copy together with its header files so that [LuaDBI](https://code.google.com/p/luadbi/) can be compiled.
 
 * Install MySql server and its header files
 
@@ -95,14 +95,15 @@ If you're planning to use MySql, you'll need to have an installed MySql copy tog
     ```
 
 
-* Install LuaSql
+* Install LuaDBI
 
-    Now that you have MySql installed with the header files, proceed to install LuaSql for MySql:
+    Now that you have MySql installed with the header files, proceed to install LuaDBI for MySql:
 
     ```bash
-    luarocks install luasql-mysql
+    luarocks install luadbi-mysql
     ```
 
+    > This additional driver is not needed by OpenResty since it has its own embedded driver. LuaDBI is used by Gin to run the console and the migrations.
 
 ##### Gin
 To install Gin, issue the commands:
@@ -118,33 +119,29 @@ Check if the Gin client got correctly installed:
 ```bash
 $ gin
 
-                 ```-`.
-             -.-/++.:sdo+.-+:
-    `.--::. `s.dh:.++:/MM/`oMms-`
-     /`/dhyoydh-dMs .s/oMM/ oMM-/y`
-     `s.sMMN-.hd+sh- +:+NMd -MMh.Md:-
-       ///+so .+:+:-/.:om:mo:mMy.MMNd
-         `-:/:o+/-:`dy. yNym`/MNyMMMM.+`
-          :/ss.--:/ `dN:.Mdyh sMMmNMd/m:
-         +-od`./ho `.-Md MMhM. yMN-d/yM+
-        -N/s+-md.   `+M:oMMMM:  dMo/mNM+
-        yydh:NM-   o.sd:N/MMM.  +Ms:sMd:`
-       `s-ymsMN     `ddoy mMs   +M:o:msy`
-       ://-MsMs  ./+`/M+d dMh   dd`m`dMm
-       +:/:dod:yhohN+-Mhd-mMm  oM++s hMy
-       s:`ysdsMo.mMMohMhN:NMh /MM-/``NM-
-      .s.:+moM+.mMMh/mhsm:Md./MMM-  oMy
-      +`.-m:m+-ms+h.hs/sNh:`sMMMM- -MN.
-     : ``o.y:/d--N.y/mhy: /mMMMMN `mM/
-   ``    `:.o/  .hsy+-`-omh/+MMN:`dM+
-  +-  .-   -.` ./`+oydMNs.`/NMh.`dM+
- .h: /sN   .--./  hhs+:/ohNms- :mN:
-  `-. .`    o+o. :o-odNds/.  .yMy`
-    + ``   +mm:o /h+:.     :yMd-
-    `::://syy+.s  o`  `:+hNNs-
-          .::::    -/shhs+-
+           /++++/:
+           NNNNNmm
+           mNNMNmy
+          .dNMMNms`
+      .:+sydMMMMMdyo/-`
+   `sdmmmNNNMMMMMNmdhhddo
+   `dMMNNMMMMMMMMMNdhdMMy
+   `dMMMNMMMMdsymMNdhdNMy
+   `dMMMNNho-....:shhdNMy
+   `dMMdo-......`.``:sNMy
+   `dd/........-..````-hy
+   `:...--.`----..`````.-
+   ``//+-  G  I  N  .+-/`
+   `:..-..``-...-.`.`.``-
+   `hs-```-./.:`-/`.```os
+   `hNms-.``.-.-.````+mmy
+   `hNNNNh+.-:---`-smNNmy
+   `hNNNMMMNy+.:sdNNNNNmy`
+   `dNNNNMMMMMNNNNNNNNNNy`
+   `hNNNNNMMMMMMMMNNmNNNy`
+    ./osyhhddddddhhyss+:`
 
-GIN v0.0.1, a JSON-API web framework.
+GIN v0.1, a JSON-API web framework.
 
 Usage: gin COMMAND [ARGS]
 
@@ -152,11 +149,10 @@ The available gin commands are:
  new [name]             Create a new Gin application
  start                  Starts the Gin server
  stop                   Stops the Gin server
- generate migration     Create a new SQL migration
- migrate                Run all SQL migrations that have not been run
- migrate rollback       Rollback one SQL migration
  console                Start a Gin console
-
+ generate migration     Create a new migration
+ migrate                Run all migrations that have not been run
+ migrate rollback       Rollback one migration
 ```
 
 If you can see this, consider your installation of Gin a success!

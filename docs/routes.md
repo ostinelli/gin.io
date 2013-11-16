@@ -9,8 +9,10 @@ title: GIN.IO | API Console
 Routes for your application are defined in the file `./config/routes.lua`. A very simple route file that exposes a `user` resource looks like this:
 
 ```lua
+local routes = require 'gin.core.routes'
+
 -- define version
-local v1 = Routes.version(1)
+local v1 = routes.version(1)
 
 -- define routes
 v1:GET("/users", { controller = "users", action = "index" })
@@ -18,12 +20,14 @@ v1:POST("/users", { controller = "users", action = "create" })
 v1:GET("/users/:id", { controller = "users", action = "show" })
 v1:PATCH("/users/:id", { controller = "users", action = "update" })
 v1:DELETE("/users/:id", { controller = "users", action = "delete" })
+
+return routes
 ```
 
 Let's see what these lines do. The first line specifies a container for version `1` of your routes:
 
 ```lua
-local v1 = Routes.version(1)
+local v1 = routes.version(1)
 ```
 
 > Gin require an integer number to define a version, as these routes are defined for major versions only. If you need to provide support for minor versions, it is possible to do so in [controllers](/docs/controllers.html).
@@ -39,20 +43,24 @@ This line routes all HTTP `GET` requests to `/users` to the action `index` of th
 If you need to provide support for multiple major versions, all you have to do is add multiple versions and build routes out of them, like so:
 
 ```lua
+local routes = require 'gin.core.routes'
+
 -- define version 1
-local v1 = Routes.version(1)
+local v1 = routes.version(1)
 
 -- define routes
 v1:GET("/users", { controller = "users", action = "index" })
 v1:POST("/users", { controller = "users", action = "create" })
 
 -- define version 2
-local v2 = Routes.version(2)
+local v2 = routes.version(2)
 
 -- define routes
 v2:GET("/users", { controller = "users", action = "index" })
 v2:POST("/users", { controller = "users", action = "create" })
 v2:GET("/users/:id", { controller = "users", action = "show" })
+
+return routes
 ```
 
 Requests to version `1` of the API will be served by controllers in the `./app/controllers/1` directory, requests to version `2` from the ones in the `./app/controllers/2` directory.

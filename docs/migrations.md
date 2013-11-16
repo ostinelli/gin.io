@@ -21,7 +21,7 @@ The migration name is just the timestamp of the moment the migration file was cr
 local SqlMigration = {}
 
 -- specify the database used in this migration (needed by the Gin migration engine)
--- SqlMigration.db = MYSQLDB
+-- SqlMigration.db = require 'db.mysql'
 
 function SqlMigration.up()
     -- Run your migration
@@ -35,7 +35,7 @@ return SqlMigration
 ```
 To set up a migration, you need to define:
 
- * the `SqlMigration.db`, which must be one of the available databases specified in `./db/db.lua` (see [application files](/docs/application_files.html) for more info).
+ * the `SqlMigration.db`, which must be one of the available databases, for example the `MySql` database specified in `./db/mysql.lua` (see [application files](/docs/application_files.html) for more info).
  * the `SqlMigration.up()` function, where you basically execute a SQL statement on the specified db. This function will be called by the Gin migration engine when running the migration.
  * the `SqlMigration.down()` function, where you execute a SQL statement on the specified db. This function will be called by the Gin migration engine when rolling back the migration.
 
@@ -44,7 +44,7 @@ The following example migration file shows the creation of a `users` table, and 
 ```lua
 local SqlMigration = {}
 
-SqlMigration.db = MYSQLDB
+SqlMigration.db = require 'db.mysql'
 
 function SqlMigration.up()
     SqlMigration.db:execute([[
@@ -71,13 +71,12 @@ To run the migration:
 ```bash
 $ gin migrate
 Migrating up in development environment
-Database 'demo_development' does not exist, created.
 ==> Successfully applied migration: 20131107134407
 ```
 
 > The Gin migration engine will also take care to generate the environment database if it doesn't exist yet.
 
-You will now have the database `demo_development`
+You will now have the database `demo_development`.
 
 To rollback a single migration:
 

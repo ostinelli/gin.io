@@ -6,7 +6,11 @@ title: GIN.IO | Other
 # Other
 
 ##### The Gin object
-In your application, `Gin` exposes some attributes you might need.
+In your application, `Gin` exposes some attributes you might need. After you've required it:
+
+```lua
+local Gin = require 'gin.core.gin'
+```
 
  * `Gin.env`: returns the current environment (`development`, `test`, `production`, or any other environment you may be running Gin in)
  * `Gin.version`: returns the current Gin version
@@ -14,12 +18,16 @@ In your application, `Gin` exposes some attributes you might need.
 
 
 ##### JSON
-If you need to manually encode/decode JSON, you can do so by using the global JSON object:
+If you need to manually encode/decode JSON, you can easily do so by first requiring `cjson`:
 
- * to encode: `JSON.encode(table)`
- * to decode: `JSON.decode(string)`
+```lua
+local json = require 'cjson'
+```
 
-JSON exposes the [CJSON](http://www.kyne.com.au/~mark/software/lua-cjson.php) class.
+ * to encode: `json.encode(table)`
+ * to decode: `json.decode(string)`
+
+json exposes the [CJSON](http://www.kyne.com.au/~mark/software/lua-cjson.php) class.
 
 
 ##### Running in environments

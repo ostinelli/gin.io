@@ -8,7 +8,9 @@ title: GIN.IO
 
 Gin is an JSON-API framework, currently in its early stage.
 
-It is helpful when you need an extra-boost in performance and scalability, as it runs embedded in a packaged version of nginx
+It has been designed to allow for fast development, TDD and ease of maintenance.
+
+Gin is helpful when you need an extra-boost in performance and scalability, as it runs embedded in a packaged version of nginx
 called [OpenResty](http://openresty.org/) and it's entirely written in [Lua](http://www.lua.org/).
 For those not familiar with Lua, don't let that scare you away: Lua is really easy to use, very fast and simple to get started with.
 

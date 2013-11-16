@@ -17,9 +17,8 @@ A greenfield `demo` application has the following structure:
         |-- models
             .
     |-- config
-        |-- initializers
-            errors.lua
         application.lua
+        errors.lua
         nginx.conf
         routes.lua
         settings.lua
@@ -28,7 +27,7 @@ A greenfield `demo` application has the following structure:
             .
         |-- schemas
             .
-        db.lua
+        mysql.lua
     |-- lib
         .
     |-- spec
@@ -67,34 +66,47 @@ Application = {
 }
 ```
 
-###### `nginx.conf`
+###### `errors.lua`
+A single entry point that defines all of the errors that your application can raise. More on errors can be read [here](/docs/errors.html).
 
+
+###### `nginx.conf`
 This file will be used to dinamically generate the file that will be used by an instance of OpenResty's `nginx`. It contains the necessary code to make Gin work, but can be customized at will like a normal `nginx.conf` file (for example, to add SSL support).
 
 ```
-worker_processes 1;
 pid tmp/{{ "{{GIN_ENV" }}}}-nginx.pid;
 
+# This number should be at maxium the number of CPU on the server
+worker_processes 4;
+
 events {
-    worker_connections 1024;
+    # Number of connections per worker
+    worker_connections 4096;
 }
 
 http {
+    # use sendfile
     sendfile on;
 
+    # Gin initialization
     lua_code_cache {{ "{{GIN_CODE_CACHE" }}}};
     lua_package_path "./?.lua;$prefix/lib/?.lua;#{= LUA_PACKAGE_PATH };;";
 
     server {
-        access_log logs/{{ "{{GIN_ENV" }}}}-access.log;
-        error_log logs/{{ "{{GIN_ENV" }}}}-error.log;
-
+        # List port
         listen {{ "{{GIN_PORT" }}}};
 
+        # Access log with buffer, or disable it completetely if unneeded
+        access_log logs/{{ "{{GIN_ENV" }}}}-access.log combined buffer=16k;
+        # access_log off;
+
+        # Error log with buffer
+        error_log logs/{{ "{{GIN_ENV" }}}}-error.log;
+
+        # Gin
         location / {
             content_by_lua 'require(\"gin.core.router\").handler(ngx)';
         }
-
         location /ginconsole {
             {{ "{{GIN_API_CONSOLE" }}}}
         }
@@ -153,17 +165,14 @@ You may also specify your own custom settings in here. All of the setting parame
 For example, `Gin.settings.port` returns the port the server is running on.
 
 
-###### ./config/initializers
-All of the `*.lua` files added here will be run as part of the initialization process. By default, it must contain an `errors.lua` file, a single entry point that defines all of the errors that your application can raise. More on errors can be read [here](/docs/errors.html).
-
 ##### ./db
 
 This directory is used to namespace everything related to your databases.
 
-###### `db.lua`
-Your database connections can be defined here. Multiple database can be supported. The generated file contains an example on how to define a connection to a `mysql` database (currently, the only RDBMS database with a Gin ORM). Please refer to [models](/docs/models.html) for how to use this file.
+###### `mysql.lua`
+This generated file contains an example on how to define a connection to a `mysql` database (currently, the only RDBMS database with a Gin ORM). Please refer to [models](/docs/models.html) on how to use this file.
 
-You may also consider setting connections to [Redis](http://redis.io/), [RabbitMQ](http://www.rabbitmq.com/) or other types of datastores.
+Gin supports having multiple databases in your application: all you have to do is add multiple files like this one, and reference them in your models or where needed. You may also consider setting connections to [Redis](http://redis.io/), [RabbitMQ](http://www.rabbitmq.com/) or other types of datastores.
 
 ###### ./db/migrations
 This directory contains all of your SQL migrations. Read more about migrations [here](/docs/migrations.html).
@@ -178,4 +187,4 @@ This directory may be used to put any library files you might need to require fr
 ##### ./spec
 Gin comes with test helpers to test drive your code. By convention, the subdirectories and filenames match the ones defined in the `./app` directory, with one caveat: all of the test files must have their name end in `*_spec.lua`.
 
-The `spec_helper.lua` file is a helper file that needs to be included in all of your tests to be able to access test runners. You may however also use it to define your own custom test helpers.
+The `spec_helper.lua` file is a helper file that needs to be included in all of your tests to be able to access test runners. You may however also use it to define your own custom test helpers. More on tests [here](/docs/testing.html).

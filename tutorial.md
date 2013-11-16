@@ -20,17 +20,18 @@ $ gin new demo
 Creating app demo...
   created file demo/spec/models/.gitkeep
   created file demo/app/models/.gitkeep
-  created file demo/config/settings.lua
   created file demo/spec/spec_helper.lua
+  created file demo/config/settings.lua
   created file demo/spec/controllers/1/pages_controller_spec.lua
   created file demo/db/schemas/.gitkeep
+  created file demo/db/mysql.lua
   created file demo/config/nginx.conf
-  created file demo/db/db.lua
+  created file demo/config/errors.lua
   created file demo/lib/.gitkeep
   created file demo/config/application.lua
   created file demo/app/controllers/1/pages_controller.lua
   created file demo/db/migrations/.gitkeep
-  created file demo/config/initializers/errors.lua
+  created file demo/.gitignore
   created file demo/config/routes.lua
 ```
 

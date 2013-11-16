@@ -56,9 +56,11 @@ Once you have defined your [errors](/docs/errors.html), it's really easy to retu
 To raise an error, simply refer to the error number you've defined in your errors' initializer. For instance, if your Errors are defined as:
 
 ```lua
-Errors = {
+local Errors = {
     [1000] = { status = 400, message = "Invalid request." }
 }
+
+return Errors
 ```
 
 Then from a controller you can simply raise it with:
