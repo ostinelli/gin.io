@@ -106,12 +106,10 @@ If you're planning to use MySql, you'll need to have an installed MySql copy tog
     > This additional driver is not needed by OpenResty since it has its own embedded driver. LuaDBI is used by Gin to run the console and the migrations.
 
 ##### Gin
-To install Gin, issue the commands:
+To install the latest Gin, issue the command:
 
 ```bash
-$ git clone git@github.com:ostinelli/gin.git
-$ cd gin
-$ luarocks make
+$ luarocks install --server=http://gin.io/repo gin
 ```
 
 Check if the Gin client got correctly installed:
