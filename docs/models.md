@@ -115,13 +115,16 @@ local Users = require 'app.models.users'
  local users = Users.all()
  ```
 
- * `Users.where(attrs, options)`: returns users that match the query specified in attributes. If provided, `options` is a table that can specify the `limit`, the `offset` and the `order` of the resultset. For example:
+ * `Users.where(attrs_or_string, options)`: takes attributes or a SQL string, and returns users that match the query specified in attributes. If provided, `options` is a table that can specify the `limit`, the `offset` and the `order` of the resultset. For example:
 
  ```lua
- local users = Users.where({ first_name = 'gin'}, { limit = 5, offset = 10, order = "first_name DESC" } )
+ local users = Users.where({ first_name = 'gin'}, { limit = 5, offset = 10, order = "first_name DESC" })
+ ```
+ ```lua
+ local users = Users.where("age > 18")
  ```
 
- * `Users.find_by(attrs, options)`: same as `.where`, but will return only the first match. If provided, `options` is a table that can specify the `order` of the resultset. For example:
+ * `Users.find_by(attrs_or_string, options)`: same as `.where`, but will return only the first match. If provided, `options` is a table that can specify the `order` of the resultset. For example:
 
  ```lua
  local user = Users.find_by({ first_name = 'gin'})
@@ -133,7 +136,7 @@ local Users = require 'app.models.users'
  local users = Users.delete_all()
  ```
 
- * `Users.delete_where(attrs, options)`: deletes all users that match the query specified in attributes. If provided, `options` is a table that can specify the `limit` of the row count. For example:
+ * `Users.delete_where(attrs_or_string, options)`: deletes all users that match the query specified in the attributes or SQL string. If provided, `options` is a table that can specify the `limit` of the row count. For example:
 
  ```lua
  local users = Users.delete_where({ first_name = 'gin'}, { limit = 5 })

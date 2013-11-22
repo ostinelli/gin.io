@@ -709,7 +709,7 @@ describe("UsersController", function()
 end)
 ```
 
-> W consider `first_name` as being the friendly identifier for a user. This is why we have a uniqueness contraint at database level, defined in our migration here above.
+> We consider `first_name` as being the friendly identifier for a user. This is why we have a uniqueness constraint at database level on the column `first_name`, as defined in our migration here above.
 
 Test fails with a `404`:
 
