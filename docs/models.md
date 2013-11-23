@@ -17,14 +17,12 @@ This is an extremely flexible and powerful design, as it allows you to implement
 
 However, Gin does come with a more traditional database helper that allows you to quickly define models that have SQL Object-Relational Mapping functionalities.
 
-> Currently, only a MySQL adapter and ORM are supported.
+> Currently, only the MySQL and PostgreSQL adapters and ORMs are supported.
 
 
-##### MySQL and its ORM
+##### MySQL Connection and models
 
-###### Define a DB and a model
-
-To create a MySQL model with ORM functionalities, we first need to define a new MySQL database in the file `./db/mysql.lua`, by requiring Gin's SQL helper and by specifying the `mysql` adapter like so:
+To create a MySQL connection and model with ORM functionalities, we first need to define a new MySQL database in the file `./db/mysql.lua`, by requiring Gin's SQL helper and by specifying the `mysql` adapter like so:
 
 ```lua
 local SqlDatabase = require 'gin.db.sql'
@@ -87,7 +85,40 @@ This defines a model `Users` that corresponds to the database table `users`, for
 
 > For the ORM to work properly, the table `users` must have an `AUTO_INCREMENT PRIMARY KEY` named `id`. Please refer to [migrations](/docs/migrations.html) for additional information.
 
-###### Queries
+
+##### PostgreSQL Connection and models
+
+To create a PostgreSQL connection and model with ORM functionalities, just proceed as instructed in the previous MySQL section. The only differences are:
+
+ * You'll need to specify the `postgresql` adapter in the database settings, like so:
+
+ ```lua
+ development = {
+        adapter = 'postgresql',
+        host = "127.0.0.1",
+        port = 5432,
+        database = "demo_development",
+        user = "postgres",
+        password = "",
+        pool = 5
+ }
+ ```
+
+ * You need to pass the PostgreSQL database to the `users` model. For instance, if you've defined the PostgreSQL database in `./db/postgresql.lua`:
+
+ ```lua
+ -- gin
+ local PostgreSql = require 'db.postgresql'
+ local SqlOrm = require 'gin.db.sql.orm'
+
+ -- define
+ return SqlOrm.define_model(PostgreSql, 'users')
+ ```
+
+ * For the ORM to work properly, the table `users` must have a `SERIAL` field named `id`.
+
+
+##### ORM Queries
 
 The `Users` model defined here above can now be used to perform standard SQL queries, after you've required it:
 

@@ -165,7 +165,7 @@ For example, `Gin.settings.port` returns the port the server is running on.
 This directory is used to namespace everything related to your databases.
 
 ###### `mysql.lua`
-This generated file contains an example on how to define a connection to a `mysql` database (currently, the only RDBMS database with a Gin ORM). Please refer to [models](/docs/models.html) on how to use this file.
+This generated file contains an example on how to define a connection to a `mysql` database. Please refer to [models](/docs/models.html) on how to use this file.
 
 Gin supports having multiple databases in your application: all you have to do is add multiple files like this one, and reference them in your models or where needed. You may also consider setting connections to [Redis](http://redis.io/), [RabbitMQ](http://www.rabbitmq.com/) or other types of datastores.
 

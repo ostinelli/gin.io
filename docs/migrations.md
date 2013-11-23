@@ -66,6 +66,28 @@ end
 return SqlMigration
 ```
 
+> If you're planning to use Gin's ORM, ensure to have an unique incremental key called `id` on the newly created tables
+> (of type `AUTO_INCREMENT PRIMARY KEY` for MySQL, `SERIAL` for PostgreSQL).
+
+The corresponding `SqlMigration.up` method when using PostgreSQL is:
+
+```lua
+[...]
+
+function SqlMigration.up()
+    SqlMigration.db:execute([[
+        CREATE TABLE users (
+            id SERIAL,
+            first_name varchar(255) NOT NULL,
+            last_name varchar(255),
+            CONSTRAINT unique_first_name UNIQUE (first_name)
+        );
+    ]])
+end
+
+[...]
+```
+
 To run the migration:
 
 ```bash

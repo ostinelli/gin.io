@@ -38,6 +38,7 @@ Gin runs on [OpenResty](http://openresty.org/), a customized bundle of [Nginx](h
     $ ./configure \
         --with-cc-opt="-I/usr/local/Cellar/pcre/PCRE-VERSION/include" \
         --with-ld-opt="-L/usr/local/Cellar/pcre/PCRE-VERSION/lib" \
+        --with-http_postgres_module \
         --with-luajit
     $ make
     $ make install
@@ -101,6 +102,67 @@ If you're planning to use MySql, you'll need to have an installed MySql copy tog
 
     ```bash
     luarocks install luadbi-mysql
+    ```
+
+    > This additional driver is not needed by OpenResty since it has its own embedded driver. LuaDBI is used by Gin to run the console and the migrations.
+
+
+##### PostgreSql
+If you're planning to use PostgreSql, you'll need to have an installed PostgreSql copy together with its header files so that [LuaDBI](https://code.google.com/p/luadbi/) can be compiled.
+
+* Install PostgreSql server and its header files
+
+    ```bash
+    $ brew install postgresql
+    ```
+
+    Ensure that it is installed:
+
+    ```bash
+    $ $ psql --ver
+    psql (PostgreSQL) 9.3.1
+    ```
+
+    Try to login with the default `postgres` role:
+
+    ```bash
+    $ psql -U postgres
+    psql (9.3.1)
+    Type "help" for help.
+
+    postgres=#
+    ```
+
+    If previous instruction returns an error because your database isn't initialized yet, just issue the command:
+
+    ```bash
+    initdb /usr/local/var/postgres
+    ```
+
+    If trying to login with the default user returns the error `psql: FATAL:  role "postgres" does not exist`, then simply create the default role:
+
+    ```bash
+    $ createuser -s postgres
+    ```
+    You may optionally want to start it automatically upon login, if so:
+
+    ```bash
+    $ cp /usr/local/Cellar/mysql/POSTGRESQL-VERSION/homebrew.mxcl.postgresql.plist ~/Library/LaunchAgents/
+    ```
+
+    To launch it immediately without rebooting your box:
+
+    ```bash
+    $ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+    ```
+
+
+* Install LuaDBI
+
+    Now that you have MySql installed with the header files, proceed to install LuaDBI for PostgreSql:
+
+    ```bash
+    luarocks install luadbi-postgresql
     ```
 
     > This additional driver is not needed by OpenResty since it has its own embedded driver. LuaDBI is used by Gin to run the console and the migrations.
