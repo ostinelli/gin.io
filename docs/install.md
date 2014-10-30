@@ -17,55 +17,21 @@ If you don't have it installed, you can easily install it by running:
 $ ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
 ```
 
-##### OpenResty
-Gin runs on [OpenResty](http://openresty.org/), a customized bundle of [Nginx](http://nginx.org/).
-
- * Install Perl Compatible Regular Expressions & LuaJIT
-
-    ```bash
-    $ brew install pcre luajit
-    ````
-    Note down the installed version, you'll need this information in the next step.
-
- * Install OpenResty
-
-    Go to [OpenResty](http://openresty.org/#Download) in the downloads section and grab the latest Mainline release. Then:
-
-    ```bash
-    $ wget http://openresty.org/download/ngx_openresty-VERSION.tar.gz
-    $ tar zxvf ngx_openresty-VERSION.tar.gz
-    $ cd ngx_openresty-VERSION/
-    $ ./configure \
-        --with-cc-opt="-I/usr/local/Cellar/pcre/PCRE-VERSION/include" \
-        --with-ld-opt="-L/usr/local/Cellar/pcre/PCRE-VERSION/lib" \
-        --with-http_postgres_module \
-        --with-luajit
-    $ make
-    $ make install
-```
-
- * Configure the PATH to OpenResty
-
-    Assuming you have installed OpenResty into `/usr/local/openresty` (this is the default), make the nginx executable of your OpenResty installation available in the PATH environment, appending at the end of `~/.bash_profile`:
-
-    ```bash
-    export PATH=/usr/local/openresty/nginx/sbin:$PATH
-    ```
-
- * Check to see if OpenResty got successfully installed
-
-    ```bash
-    $ nginx -v
-    nginx version: ngx_openresty/1.4.3.3
-    ```
-
-##### Lua & Luarocks
-Install Lua and its package manager.
+##### PCRE, Lua & LuaJIT
+Install Perl Compatible Regular Expressions & LuaJIT
 
 ```bash
-$ brew install lua luarocks
-```
+$ brew install pcre lua luajit
+````
+Note down the installed version, you'll need this information in the next step.
 
+
+##### Luarocks
+Install Lua's package manager.
+
+```bash
+$ brew install luarocks --with-luajit
+```
 
 ##### MySql
 If you're planning to use MySql, you'll need to have an installed MySql copy together with its header files so that [LuaDBI](https://code.google.com/p/luadbi/) can be compiled.
@@ -80,13 +46,13 @@ If you're planning to use MySql, you'll need to have an installed MySql copy tog
 
     ```bash
     $ mysql --version
-    mysql  Ver 14.14 Distrib 5.6.13, for osx10.9 (x86_64) using  EditLine wrapper
+    mysql  Ver 14.14 Distrib 5.6.21, for osx10.10 (x86_64) using  EditLine wrapper
     ```
 
     You may optionally want to start it automatically upon login, if so:
 
     ```bash
-    $ cp /usr/local/Cellar/mysql/MYSQL-VERSION/homebrew.mxcl.mysql.plist ~/Library/LaunchAgents/
+    $ ln -sfv /usr/local/opt/mysql/*.plist ~/Library/LaunchAgents
     ```
 
     To launch it immediately without rebooting your box:
@@ -104,6 +70,12 @@ If you're planning to use MySql, you'll need to have an installed MySql copy tog
     luarocks install luadbi-mysql
     ```
 
+    You may need to specify where to find the MySQL header files, like so:
+
+    ```bash
+    luarocks install luadbi-mysql MYSQL_INCDIR=/usr/local/opt/mysql/include/mysql
+    ```
+
     > This additional driver is not needed by OpenResty since it has its own embedded driver. LuaDBI is used by Gin to run the console and the migrations.
 
 
@@ -119,15 +91,27 @@ If you're planning to use PostgreSql, you'll need to have an installed PostgreSq
     Ensure that it is installed:
 
     ```bash
-    $ $ psql --ver
-    psql (PostgreSQL) 9.3.1
+    $ psql --ver
+    psql (PostgreSQL) 9.3.5
+    ```
+
+    You may optionally want to start it automatically upon login, if so:
+
+    ```bash
+    $ ln -sfv /usr/local/opt/postgresql/*.plist ~/Library/LaunchAgents
+    ```
+
+    To launch it immediately without rebooting your box:
+
+    ```bash
+    $ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
     ```
 
     Try to login with the default `postgres` role:
 
     ```bash
     $ psql -U postgres
-    psql (9.3.1)
+    psql (9.3.5)
     Type "help" for help.
 
     postgres=#
@@ -144,18 +128,6 @@ If you're planning to use PostgreSql, you'll need to have an installed PostgreSq
     ```bash
     $ createuser -s postgres
     ```
-    You may optionally want to start it automatically upon login, if so:
-
-    ```bash
-    $ cp /usr/local/Cellar/mysql/POSTGRESQL-VERSION/homebrew.mxcl.postgresql.plist ~/Library/LaunchAgents/
-    ```
-
-    To launch it immediately without rebooting your box:
-
-    ```bash
-    $ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
-    ```
-
 
 * Install LuaDBI
 
@@ -166,6 +138,55 @@ If you're planning to use PostgreSql, you'll need to have an installed PostgreSq
     ```
 
     > This additional driver is not needed by OpenResty since it has its own embedded driver. LuaDBI is used by Gin to run the console and the migrations.
+
+
+##### OpenResty
+Gin runs on [OpenResty](http://openresty.org/), a customized bundle of [Nginx](http://nginx.org/).
+
+ * Install OpenResty
+
+    Go to [OpenResty](http://openresty.org/#Download) in the downloads section and grab the latest Mainline release. Then:
+
+    ```bash
+    $ wget http://openresty.org/download/ngx_openresty-{VERSION}.tar.gz
+    $ tar zxvf ngx_openresty-{VERSION}.tar.gz
+    $ cd ngx_openresty-{VERSION}/
+    $ ./configure \
+        --with-cc-opt="-I/usr/local/Cellar/pcre/{PCRE-VERSION}/include" \
+        --with-ld-opt="-L/usr/local/Cellar/pcre/{PCRE-VERSION}/lib" \
+        --with-luajit
+    $ make
+    $ make install
+    ```
+
+    > Note: Ensure to properly substitute `{VERSION}` and `{PCRE-VERSION}` with OpenResty and PCRE versions respectively.
+
+    If you plan to use PostgreSQL, then you need to have PostgreSQL already installed and
+    the configure step needs to provide the additional option `--with-http_postgres_module`:
+
+    ```bash
+    $ ./configure \
+        --with-cc-opt="-I/usr/local/Cellar/pcre/{PCRE-VERSION}/include" \
+        --with-ld-opt="-L/usr/local/Cellar/pcre/{PCRE-VERSION}/lib" \
+        --with-http_postgres_module \
+        --with-luajit
+    ```
+
+ * Configure the PATH to OpenResty
+
+    Assuming you have installed OpenResty into `/usr/local/openresty` (this is the default), make the nginx executable of your OpenResty installation available in the PATH environment, appending at the end of `~/.bash_profile`:
+
+    ```bash
+    export PATH=/usr/local/openresty/nginx/sbin:$PATH
+    ```
+
+ * Check to see if OpenResty got successfully installed (you might need to `source ~/.bash_profile` or just restart the terminal for this to work):
+
+    ```bash
+    $ nginx -v
+    nginx version: openresty/1.7.4.1
+    ```
+
 
 ##### Gin
 To install the latest Gin, issue the command:
@@ -201,7 +222,7 @@ $ gin
    `hNNNNNMMMMMMMMNNmNNNy`
     ./osyhhddddddhhyss+:`
 
-GIN v0.1, a JSON-API web framework.
+GIN v0.1.4, a JSON-API web framework.
 
 Usage: gin COMMAND [ARGS]
 
