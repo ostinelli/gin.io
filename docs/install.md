@@ -18,10 +18,10 @@ $ ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"
 ```
 
 ##### PCRE, Lua & LuaJIT
-Install Perl Compatible Regular Expressions & LuaJIT
+Install Lua 5.1 (the version that runs in OpenResty) Perl Compatible Regular Expressions & LuaJIT
 
 ```bash
-$ brew install pcre lua luajit
+$ brew install lua51 luajit pcre
 ````
 Note down the installed version, you'll need this information in the next step.
 
@@ -29,8 +29,12 @@ Note down the installed version, you'll need this information in the next step.
 ##### Luarocks
 Install Lua's package manager.
 
+Luarocks is installed by default when installing Lua 5.2 with Homebrew, but since we're using Lua 5.1 (for compatibility with OpenResty) we need to install it manually. To do so, download the latest Luarocks from the [official repository](https://github.com/keplerproject/luarocks/releases) (at the time of the writing, it's v2.2.2), untar the file and then install it:
+
 ```bash
-$ brew install luarocks --with-luajit
+$ ./configure
+$ make build
+$ make install
 ```
 
 ##### MySql
@@ -145,11 +149,11 @@ Gin runs on [OpenResty](http://openresty.org/), a customized bundle of [Nginx](h
 
  * Install OpenResty
 
-    Go to [OpenResty](http://openresty.org/#Download) in the downloads section and grab the latest Mainline release. Then:
+    Go to [OpenResty](http://openresty.org/#Download) in the downloads section and grab the latest release. Then:
 
     ```bash
     $ wget http://openresty.org/download/ngx_openresty-{VERSION}.tar.gz
-    $ tar zxvf ngx_openresty-{VERSION}.tar.gz
+    $ tar -zxvf ngx_openresty-{VERSION}.tar.gz
     $ cd ngx_openresty-{VERSION}/
     $ ./configure \
         --with-cc-opt="-I/usr/local/Cellar/pcre/{PCRE-VERSION}/include" \
@@ -184,7 +188,7 @@ Gin runs on [OpenResty](http://openresty.org/), a customized bundle of [Nginx](h
 
     ```bash
     $ nginx -v
-    nginx version: openresty/1.7.4.1
+    nginx version: openresty/1.9.3.1
     ```
 
 

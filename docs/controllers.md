@@ -20,6 +20,14 @@ end
 return InfoController
 ```
 
+When called, this returns an HTTP `200` response with body:
+
+```json
+{
+    "name": "gin"
+}
+```
+
 ##### Return values
 
 The return values of a controller define its response. There are three way you can do so.

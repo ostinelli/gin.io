@@ -26,6 +26,14 @@ end
 return InfoController
 ```
 
+When called, this returns an HTTP `200` response with body:
+
+```json
+{
+    "name": "gin"
+}
+```
+
 #### Features
 
 Gin already provides:
